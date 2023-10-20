@@ -3,9 +3,9 @@ const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
 const db = require('../db');
 
-passport.use(new LocalStrategy(async function verify(username,password, done) {
+passport.use(new LocalStrategy({usernameField:'email', passwordField:'password'},async function verify(email,password, done) {
     try{
-        const user = await db.findUserByEmail(username);
+        const user = await db.findUserByEmail(email);
         if(!user) {return done(null,false)}
         const matchedPassword = await bcrypt.compare(password,user.password);
         if(!matchedPassword) {return done(null,false)}

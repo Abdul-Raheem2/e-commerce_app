@@ -24,18 +24,19 @@ userRouter.post('/register',async (req,res)=>{
 });
 
 userRouter.post("/login", passport.authenticate('local',{
-    successRedirect: 'successfulLogin',
-    failureRedirect:'login',
+    successRedirect: 'user'
 }));
   
 
-userRouter.get("/logout", (req, res,next) => {
-    req.logout()
-    res.redirect("../../");
+userRouter.post("/logout", (req, res,next) => {
+    req.logout((err)=>{
+        if(err){console.log(err)}
+        res.redirect("/");
+    })
 });
 
 
-userRouter.get('/successfulLogin',(req,res)=>{
+userRouter.get('/user',(req,res)=>{
     res.send(`Hello ${req.user.first_name} ${req.user.last_name}`);
 })
 userRouter.get('/login',(req,res)=>{
@@ -44,9 +45,9 @@ userRouter.get('/login',(req,res)=>{
 
 userRouter.get('/protected',(req,res)=>{
     if(req.isAuthenticated()){
-        res.send(req.session);
+        res.send('authenticated');
     }else{
-        res.send('no');
+        res.send('not authenticated');
     }
 })
 

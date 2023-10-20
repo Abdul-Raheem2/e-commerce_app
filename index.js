@@ -33,7 +33,7 @@ app.use(passport.session());
 require('./config/passport');
 
 const userRouter = require('./routes/user.js');
-app.use('/user',userRouter);
+app.use('/',userRouter);
 
 app.get('/', (req,res)=>{
     if(req.session.viewCount){
