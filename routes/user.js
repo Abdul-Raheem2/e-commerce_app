@@ -2,6 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const db = require('../db');
 const bcrypt = require('bcrypt');
+
 const userRouter = express.Router({mergeParams:true});
 
 
@@ -17,8 +18,7 @@ userRouter.post('/register',async (req,res)=>{
         const result = await db.addUser(email,hashPassword,first_name,last_name);
         res.redirect('login');
     }catch (error){
-        console.log(error);
-        res.status(500).send();
+        next(error);
     }
 
 });
@@ -30,7 +30,7 @@ userRouter.post("/login", passport.authenticate('local',{
 
 userRouter.post("/logout", (req, res,next) => {
     req.logout((err)=>{
-        if(err){console.log(err)}
+        if(err){return next(error)}
         res.redirect("/");
     })
 });

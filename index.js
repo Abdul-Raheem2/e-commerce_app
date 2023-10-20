@@ -32,8 +32,11 @@ app.use(passport.session());
 
 require('./config/passport');
 
-const userRouter = require('./routes/user.js');
+const userRouter = require('./routes/user');
 app.use('/',userRouter);
+
+const productRouter = require('./routes/products');
+app.use('/products',productRouter);
 
 app.get('/', (req,res)=>{
     if(req.session.viewCount){
@@ -43,6 +46,11 @@ app.get('/', (req,res)=>{
     }
     res.send(`<h1>Views:${req.session.viewCount}</h1>`);
 });
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send();
+})
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`)
