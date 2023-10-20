@@ -1,39 +1,48 @@
 const express = require('express');
-
 require('dotenv').config();
+
+const session = require('express-session');
+const passport = require('passport');
+const LocalStrategy = require("passport-local").Strategy;
+const bcrypt = require("bcrypt");
+const db = require('./db'); 
+const cors = require('cors');
+const logger = require('morgan');
 
 const app = express();
 const port = process.env.PORT;
 
-const cors = require('cors');
 app.use(cors());
-
-const logger = require('morgan');
 app.use(logger('dev'));
 
-const bodyParser = require('body-parser');
-app.use(bodyParser.json());
-
-const passport = require('passport');
-const session = require('express-session');
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
-    cookie: { maxAge: 86400000, secure: true },
+    cookie: { maxAge: 1000*60*60*24},
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: false
   })
 );
+
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/', (req,res)=>{
-    res.send('Home');
-});
+require('./config/passport');
 
 const userRouter = require('./routes/user.js');
 app.use('/user',userRouter);
+
+app.get('/', (req,res)=>{
+    if(req.session.viewCount){
+        req.session.viewCount++;
+    }else{
+        req.session.viewCount=1;
+    }
+    res.send(`<h1>Views:${req.session.viewCount}</h1>`);
+});
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`)

@@ -1,4 +1,5 @@
 const express = require('express');
+const passport = require('passport');
 const db = require('../db');
 const bcrypt = require('bcrypt');
 const userRouter = express.Router({mergeParams:true});
@@ -14,7 +15,7 @@ userRouter.post('/register',async (req,res)=>{
         const salt = await bcrypt.genSalt(10);
         const hashPassword = await bcrypt.hash(password,salt);
         const result = await db.addUser(email,hashPassword,first_name,last_name);
-        res.status(200).send('User added');
+        res.redirect('login');
     }catch (error){
         console.log(error);
         res.status(500).send();
@@ -22,14 +23,31 @@ userRouter.post('/register',async (req,res)=>{
 
 });
 
-userRouter.get('/login',async (req,res)=>{
-    db.query('SELECT * FROM users WHERE id = 3',null,(error,results)=>{
-        if(error){
-            res.status(400).send();
-        }else{
-            res.status(200).json(results.rows);
-        }
-    });
+userRouter.post("/login", passport.authenticate('local',{
+    successRedirect: 'successfulLogin',
+    failureRedirect:'login',
+}));
+  
+
+userRouter.get("/logout", (req, res,next) => {
+    req.logout()
+    res.redirect("../../");
 });
+
+
+userRouter.get('/successfulLogin',(req,res)=>{
+    res.send(`Hello ${req.user.first_name} ${req.user.last_name}`);
+})
+userRouter.get('/login',(req,res)=>{
+    res.send('login');
+})
+
+userRouter.get('/protected',(req,res)=>{
+    if(req.isAuthenticated()){
+        res.send(req.session);
+    }else{
+        res.send('no');
+    }
+})
 
 module.exports = userRouter;
