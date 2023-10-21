@@ -43,10 +43,34 @@ const productsByCategory = async (category) => {
 }
 
 const productById = async (id) => {
-    const results = await pool.query('SELECT * FROM product WHERE id = $1 LIMIT 1',[id]);
+    const results = await pool.query('SELECT * FROM products WHERE id = $1 LIMIT 1',[id]);
     return results.rows[0];
 }
 
+//basket
+
+const basketByUserID = async (user_id) => {
+    const results = await pool.query(`SELECT products.id AS product_id,products.name AS name,products.price AS price,
+    products.category AS category,basket_products.quantity AS quantity FROM basket_products 
+    INNER JOIN products ON products.id = basket_products.product_id WHERE user_id = $1`,[user_id]);
+    return results.rows;
+}
+
+const addToBasket = async (user_id,product_id,quantity) => {
+    const results = await pool.query(`INSERT INTO basket_products (user_id,product_id,quantity) VALUES ($1,$2,$3)`,
+    [user_id,product_id,quantity]);
+    return results.rowCount === 1;
+}
+
+const deleteFromBasket = async (user_id,product_id) => {
+    await pool.query('DELETE FROM basket_products WHERE user_id = $1 and product_id = $2',[user_id,product_id]);
+}
+
+const updateProductQuantity = async (user_id,product_id,quantity) => {
+    const results = await pool.query(`UPDATE basket_products SET quantity = $3 WHERE user_id = $1 AND product_id = $2`,
+    [user_id,product_id,quantity]);
+    return results.rowCount ===1;
+}
 module.exports ={
     query,
     userExists,
@@ -55,5 +79,9 @@ module.exports ={
     findUserById,
     allProducts,
     productsByCategory,
-    productById
+    productById,
+    basketByUserID,
+    addToBasket,
+    deleteFromBasket,
+    updateProductQuantity
 };

@@ -38,6 +38,9 @@ app.use('/',userRouter);
 const productRouter = require('./routes/products');
 app.use('/products',productRouter);
 
+const basketRouter = require('./routes/basket');
+app.use('/basket',basketRouter);
+
 app.get('/', (req,res)=>{
     if(req.session.viewCount){
         req.session.viewCount++;
@@ -48,7 +51,7 @@ app.get('/', (req,res)=>{
 });
 
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error(err);
   res.status(500).send();
 })
 

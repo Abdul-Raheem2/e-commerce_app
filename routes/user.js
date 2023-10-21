@@ -6,9 +6,12 @@ const bcrypt = require('bcrypt');
 const userRouter = express.Router({mergeParams:true});
 
 
-userRouter.post('/register',async (req,res)=>{
+userRouter.post('/register',async (req,res,next)=>{
     try{
         const {email,password,first_name,last_name} = req.body;
+        if(!email || !password){
+            return res.status(400).send('Enter a username and password');
+        }
         const user = await db.userExists(email);
         if(user){
             return res.status(400).send('User already exists');
