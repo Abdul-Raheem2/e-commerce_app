@@ -17,7 +17,8 @@ const userExists = async (email) => {
 }
 
 const addUser = async (email,hashPassword,first_name,last_name) => {
-    return await pool.query('INSERT INTO users (email,password,first_name,last_name) VALUES ($1,$2,$3,$4)',[email,hashPassword,first_name,last_name]);
+    const results = await pool.query('INSERT INTO users (email,password,first_name,last_name) VALUES ($1,$2,$3,$4)',[email,hashPassword,first_name,last_name]);
+    return results.rowCount ===1;
 }
 
 const findUserByEmail = async (email) => {
@@ -28,6 +29,21 @@ const findUserByEmail = async (email) => {
 const findUserById = async (id) => {
     const results = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
     return(results.rows[0]);
+}
+
+const updateUser = async (id,email,first_name,last_name) =>{
+    const results = await pool.query('UPDATE users SET email=$1,first_name=$2,last_name=$3 WHERE id=$4',
+    [email,first_name,last_name,id]);
+    return results.rowCount===1;
+}
+
+const updatePassword = async (id,password) => {
+    const results = await pool.query('UPDATE users SET password=$1 WHERE id=$2',[password,id]);
+    return results.rowCount===1;
+}
+
+const deleteUser = async (id) => {
+    await pool.query('DELETE FROM users WHERE id = $1',[id]);
 }
 
 //products
@@ -77,6 +93,9 @@ module.exports ={
     addUser,
     findUserByEmail,
     findUserById,
+    updateUser,
+    deleteUser,
+    updatePassword,
     allProducts,
     productsByCategory,
     productById,

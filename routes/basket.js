@@ -28,7 +28,7 @@ basketRouter.post('/',async (req,res,next)=>{ //add to basket
             }else if(!Number.isInteger(product_id) || !Number.isInteger(quantity) || quantity <0){
                 return res.status(400).send('invalid product_id or quantity');
             }
-            await db.addToBasket(req.user.id,product_id,quantity);
+            await db.addToBasket(req.user.id,product_id,quantity);//CHANGE THIS
             res.status(201).send('product added to basket');
         }else{
             res.status(401).send('log in first');
@@ -56,7 +56,7 @@ basketRouter.put('/',async (req,res,next)=>{
             }
             let updated = false;
             if (quantity ===0){
-                await db.deleteFromBasket(req.user.id,product_id);
+                await db.deleteFromBasket(req.user.id,product_id);//CHANGE THIS
                 updated = true;
             }else{
                 updated = await db.updateProductQuantity(req.user.id,product_id,quantity);
@@ -79,7 +79,7 @@ basketRouter.delete('/:product_id',async (req,res,next)=>{ //remove from basket
             if(!product_id || !Number.isInteger(product_id)){
                 return res.status(400).send('invalid product_id');
             }
-            await db.deleteFromBasket(req.user.id,product_id);
+            await db.deleteFromBasket(req.user.id,product_id); //CHANGE THIS
             res.status(204).send();
         }else{
             res.status(401).send('log in first');

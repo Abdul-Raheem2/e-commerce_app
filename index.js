@@ -32,14 +32,14 @@ app.use(passport.session());
 
 require('./config/passport');
 
-const userRouter = require('./routes/user');
-app.use('/',userRouter);
-
 const productRouter = require('./routes/products');
 app.use('/products',productRouter);
 
 const basketRouter = require('./routes/basket');
 app.use('/basket',basketRouter);
+
+const userRouter = require('./routes/user');
+app.use('/',userRouter);
 
 app.get('/', (req,res)=>{
     if(req.session.viewCount){
