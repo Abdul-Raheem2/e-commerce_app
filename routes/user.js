@@ -5,7 +5,6 @@ const bcrypt = require('bcrypt');
 
 const userRouter = express.Router({mergeParams:true});
 
-
 userRouter.post('/register',async (req,res,next)=>{
     try{
         const {email,password,first_name,last_name} = req.body;
@@ -19,8 +18,7 @@ userRouter.post('/register',async (req,res,next)=>{
         const salt = await bcrypt.genSalt(10);
         const hashPassword = await bcrypt.hash(password,salt);
         const addedUser = await db.addUser(email,hashPassword,first_name,last_name);
-        if(addedUser) {res.status(201).send('user created')}
-        else {next(new Error())}
+        res.status(201).send('user created')
     }catch (error){
         next(error);
     }
@@ -28,11 +26,20 @@ userRouter.post('/register',async (req,res,next)=>{
 });
 
 userRouter.post("/login", passport.authenticate('local',{
-    successRedirect: 'user',
-    failureMessage:true,
-    failureRedirect:'/login'
+    successRedirect: '/login/success',
+    failureRedirect:'/login/failed'
 }));
-  
+
+userRouter.get('/login/success',(req,res)=>{
+    if(req.isAuthenticated()){
+        res.send('Successfully logged in')
+    }else{
+        res.redirect('/login/failed');
+    }
+})
+userRouter.get('/login/failed',(req,res)=>{
+    res.send('Incorrect username or password');
+})
 
 userRouter.post("/logout", (req, res,next) => {
     req.logout((err)=>{
@@ -69,12 +76,10 @@ userRouter.put('/user',async (req,res,next)=>{
                 newValues=true
                 last_name=req.body.last_name;
             }
-            let updated = true;
             if(newValues){
-                updated = await db.updateUser(id,email,first_name,last_name);
+                await db.updateUser(id,email,first_name,last_name);
             }
-            if(updated){res.status(200).send('user details updated')}
-            else{next(new Error())}
+            res.status(200).send('user details updated')
         }else{
             res.status(401).send('Not logged in');
         }
@@ -94,8 +99,7 @@ userRouter.put('/password',async (req,res,next)=>{
             const salt = await bcrypt.genSalt(10);
             const hashPassword = await bcrypt.hash(new_password,salt);
             const updated = await db.updatePassword(req.user.id,hashPassword);
-            if(updated){res.status(200).send('password updated')}
-            else{next(new Error())}
+            res.status(200).send('password updated')
         }
     }catch(err){next(err)}
 })
@@ -110,16 +114,6 @@ userRouter.delete('/user',(req,res,next)=>{
             res.redirect('/');
         })
     }catch(error){next(error)}
-})
-
-
-userRouter.get('/login',(req,res)=>{
-    if(req.session.messages){
-        const message = req.session.messages[0];
-        req.session.messages = null;
-        res.status(400).send(message)
-    }
-    else {res.send('login')}
 })
 
 module.exports = userRouter;

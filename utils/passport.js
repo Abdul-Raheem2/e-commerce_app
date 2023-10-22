@@ -6,9 +6,9 @@ const db = require('../db');
 passport.use(new LocalStrategy({usernameField:'email', passwordField:'password'},async function verify(email,password, done) {
     try{
         const user = await db.findUserByEmail(email);
-        if(!user) {return done(null,false,{message:'The username or password is incorrect'})}
+        if(!user) {return done(null,false)}
         const matchedPassword = await bcrypt.compare(password,user.password);
-        if(!matchedPassword) {return done(null,false,{message:'The username or password is incorrect'})}
+        if(!matchedPassword) {return done(null,false)}
         done(null,user);
     }catch(error){
         return done(error)

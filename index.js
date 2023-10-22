@@ -3,9 +3,7 @@ require('dotenv').config();
 
 const session = require('express-session');
 const passport = require('passport');
-const LocalStrategy = require("passport-local").Strategy;
-const bcrypt = require("bcrypt");
-const db = require('./db'); 
+
 const cors = require('cors');
 const logger = require('morgan');
 
@@ -30,7 +28,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-require('./config/passport');
+require('./utils/passport');
 
 const productRouter = require('./routes/products');
 app.use('/products',productRouter);
