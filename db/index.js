@@ -22,16 +22,16 @@ const addUser = async (email,hashPassword,firstName,lastName) => {
 }
 
 const findUserByEmail = async (email) => {
-    return (await pool.query('SELECT * FROM users WHERE LOWER(email) = LOWER($1) LIMIT 1', [email])).rows[0];
+    return (await pool.query('SELECT id,email,password FROM users WHERE LOWER(email) = LOWER($1) LIMIT 1', [email])).rows[0];
 }
 
 const findUserById = async (id) => {
-    return (await pool.query('SELECT * FROM users WHERE id = $1 LIMIT 1', [id])).rows[0];
+    return (await pool.query('SELECT id,email,first_name,last_name FROM users WHERE id = $1 LIMIT 1', [id])).rows[0];
 }
 
 const updateUser = async (id,email,firstName,lastName) =>{
-    await pool.query('UPDATE users SET email=$1,first_name=$2,last_name=$3 WHERE id=$4',
-    [email,firstName,lastName,id]);
+    return (await pool.query('UPDATE users SET email=$1,first_name=$2,last_name=$3 WHERE id=$4 RETURNING id,email,first_name,last_name',
+    [email,firstName,lastName,id])).rows[0];
 }
 
 const updatePassword = async (id,password) => {

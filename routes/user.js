@@ -13,26 +13,25 @@ userRouter.get('/',(req,res)=>{
 
 userRouter.put('/',async (req,res,next)=>{
     try{
+        let updatedUser = req.user;
         let newValues = false;
-        let {id,email,firstName,lastName} = req.user;
-        if(req.body.email && req.body.email!==email){             
-            email=req.body.email;
-            newValues=true;
+        const email = req.body.email || updatedUser.email;
+        if(email !== updatedUser.email){
+            newValues=true;             
             const user = await db.userExists(email);
             if(user){
                 return res.status(400).send('email is already in use');
             }
-        }if(req.body.firstName && req.body.firstName!==firstName){
-            newValues=true;
-            firstName=req.body.firstName;
-        }if(req.body.lastName && req.body.lastName!==lastName){
-            newValues=true
-            lastName=req.body.lastName;
         }
+        const firstName = req.body.firstName || updatedUser.firstName;
+        const lastName =req.body.lastName || updatedUser.lastName;
+        firstName !== updatedUser.firstName && (newValues=true);
+        lastName !== updatedUser.lastName && (newValues = true);
+        console.log(newValues);
         if(newValues){
-            await db.updateUser(id,email,firstName,lastName);
+            updatedUser = await db.updateUser(updatedUser.id,email,firstName,lastName);
         }
-        res.status(200).send('user details updated')
+        res.status(200).json(updatedUser);
     }catch(error){next(error)}
 })
 
