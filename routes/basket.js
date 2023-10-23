@@ -24,7 +24,7 @@ basketRouter.get('/',async (req,res,next)=>{
 
 basketRouter.post('/',async (req,res,next)=>{
     try{
-        let {product_id: productId,quantity} = req.body;
+        let {productId,quantity} = req.body;
         productId = Number(productId);
         quantity = Number(quantity);
         if(!productId || !quantity){
@@ -46,7 +46,7 @@ basketRouter.post('/',async (req,res,next)=>{
 
 basketRouter.put('/',async (req,res,next)=>{
     try{
-        let {product_id: productId,quantity} = req.body;
+        let {productId,quantity} = req.body;
         productId = Number(productId);
         quantity = Number(quantity);
         if(!productId || !quantity && quantity !==0){

@@ -45,15 +45,15 @@ const deleteUser = async (id) => {
 //products
 
 const allProducts = async () => {
-    return (await pool.query('SELECT * FROM products WHERE active = True')).rows;
+    return (await pool.query('SELECT id,name,price,category FROM products WHERE active = True')).rows;
 }
 
 const productsByCategory = async (category) => {
-    return (await pool.query('SELECT * FROM products WHERE category = $1 AND active = True',[category])).rows;
+    return (await pool.query('SELECT id,name,price,category FROM products WHERE category = $1 AND active = True',[category])).rows;
 }
 
 const productById = async (id) => {
-    return (await pool.query('SELECT * FROM products WHERE id = $1 LIMIT 1',[id])).rows[0];
+    return (await pool.query('SELECT id,name,description,price,category FROM products WHERE id = $1 LIMIT 1',[id])).rows[0];
 }
 
 //basket
@@ -92,7 +92,7 @@ const deleteFromBasket = async (userId,productId) => {
 
 const newOrder = async (userId,numProducts,totalCost) => {
     return (await pool.query(`INSERT INTO orders (user_id,order_date,num_products,total_cost,status)
-    VALUES ($1,NOW(),$2,$3,pending) RETURNING *`,[userId,numProducts,totalCost])).rows[0];
+    VALUES ($1,NOW(),$2,$3,$4) RETURNING *`,[userId,numProducts,totalCost,'pending'])).rows[0];
 }
 
 const deleteBasket = async (userId) => {
