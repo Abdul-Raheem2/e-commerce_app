@@ -36,8 +36,14 @@ app.use('/products',productRouter);
 const basketRouter = require('./routes/basket');
 app.use('/basket',basketRouter);
 
+const orderRouter = require('./routes/orders');
+app.use('/orders',orderRouter);
+
 const userRouter = require('./routes/user');
-app.use('/',userRouter);
+app.use('/user',userRouter);
+
+const loginRouter = require('./routes/login');
+app.use('/',loginRouter);
 
 app.get('/', (req,res)=>{
     if(req.session.viewCount){

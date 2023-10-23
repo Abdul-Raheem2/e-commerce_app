@@ -25,10 +25,10 @@ passport.deserializeUser(async function(id,done){
         done(null,{
             id: user.id,
             email: user.email,
-            first_name: user.first_name,
-            last_name: user.last_name
+            firstName: user.first_name,
+            lastName: user.last_name
         });
-    }catch{
-        done(err);
+    }catch(error){
+        done(error);
     }
 })
