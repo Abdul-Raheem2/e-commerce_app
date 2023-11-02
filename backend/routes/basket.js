@@ -36,7 +36,7 @@ basketRouter.post('/',async (req,res,next)=>{
         res.status(201).json(newProduct);
     }catch(error){
         if(error.code==='23503'){ //errors from db
-            res.status(400).send('invalid product id');
+            res.status(404).send('invalid product id');
         }else if (error.code ==='23505'){
             res.status(400).send('product already in basket')
         }
@@ -65,7 +65,10 @@ basketRouter.put('/',async (req,res,next)=>{
         const newProduct = await db.addToBasket(req.user.id,productId,quantity);
         res.status(201).json(newProduct);
     }catch(error){
-        next(error);
+        if(error.code==='23503'){ //errors from db
+            res.status(404).send('invalid product id');
+        }
+        else{next(error)};
     }
 })
 

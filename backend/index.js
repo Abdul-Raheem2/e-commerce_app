@@ -4,11 +4,16 @@ require('dotenv').config();
 const session = require('express-session');
 const passport = require('passport');
 
+//const swaggerUi = require('swagger-ui-express');
+//const openApiDocumentation = require('./openapi.json');
+
 const cors = require('cors');
 const logger = require('morgan');
 
 const app = express();
 const port = process.env.PORT;
+
+//app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openApiDocumentation));
 
 app.use(cors());
 app.use(logger('dev'));
@@ -42,8 +47,8 @@ app.use('/orders',orderRouter);
 const userRouter = require('./routes/user');
 app.use('/user',userRouter);
 
-const loginRouter = require('./routes/login');
-app.use('/',loginRouter);
+const authRouter = require('./routes/auth');
+app.use('/',authRouter);
 
 app.get('/', (req,res)=>{
     if(req.session.viewCount){

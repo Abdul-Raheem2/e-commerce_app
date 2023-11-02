@@ -10,7 +10,8 @@
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "pg": "^8.11.3",
-    "pg-format": "^1.0.4"
+    "pg-format": "^1.0.4",
+    "swagger-ui-express": "^5.0.0"
   },
   "name": "e-commerce_app",
   "version": "1.0.0",
