@@ -38,7 +38,7 @@ authRouter.get('/login/success',(req,res)=>{
     }
 })
 authRouter.get('/login/failed',(req,res)=>{
-    res.send('Incorrect username or password');
+    res.send('Incorrect email or password');
 })
 
 authRouter.post("/logout", (req, res,next) => {

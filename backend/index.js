@@ -7,6 +7,7 @@ const passport = require('passport');
 //const swaggerUi = require('swagger-ui-express');
 //const openApiDocumentation = require('./openapi.json');
 
+const helmet = require('helmet');
 const cors = require('cors');
 const logger = require('morgan');
 
@@ -14,6 +15,8 @@ const app = express();
 const port = process.env.PORT;
 
 //app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openApiDocumentation));
+
+app.use(helmet());
 
 app.use(cors());
 app.use(logger('dev'));
@@ -24,7 +27,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
-    cookie: { maxAge: 1000*60*60*24},
+    cookie: { 
+      maxAge: 1000*60*60*24,
+      //secure:true,
+      httpOnly:true
+    },
     resave: false,
     saveUninitialized: false
   })

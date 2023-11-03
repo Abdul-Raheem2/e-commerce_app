@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 
 export default function NotLoggedIn(){
     return(
         <nav>
-            <Link>Register</Link>
-            <Link>Log In</Link>
+            <NavLink to='/register'>Register</NavLink>
+            <NavLink to='/logIn'>Log In</NavLink>
         </nav>
     )
 }
