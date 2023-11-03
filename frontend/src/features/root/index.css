@@ -1,0 +1,16 @@
+
+header{
+    border-bottom: thin solid black;
+}
+
+h1{
+    display: inline-block;
+    width:50%;
+    text-align: center;
+}
+
+nav{
+    display: inline-flex;
+    width:50%;
+    justify-content: space-around;
+}
