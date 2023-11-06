@@ -1,6 +1,11 @@
-import { NavLink } from "react-router-dom"
+import { useEffect } from "react";
+import { NavLink,useNavigate } from "react-router-dom"
 
 export default function NotLoggedIn(){
+    const navigate = useNavigate();
+    useEffect(()=>{
+        navigate('/');
+    },[navigate]);
     return(
         <nav>
             <NavLink to='/register'>Register</NavLink>

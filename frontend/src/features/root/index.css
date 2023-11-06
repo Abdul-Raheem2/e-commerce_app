@@ -56,3 +56,38 @@ input[type="submit"]{
 #register-confirmpassword-div{
     margin-bottom: 20px;
 }
+
+/*Products*/
+
+#products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+#product{
+    width:250px;
+    height:300px;
+    margin:10px 10px;
+    border: thin solid black;
+}
+
+#product-image{
+    margin:10px auto;
+    width: 200px;
+    height: 200px;
+    border: thin dotted black;
+}
+
+#product-name{
+    text-align: center;
+}
+
+#product-price{
+    float:right;
+    margin:0 25px;
+    font-size: 18px;
+}
+
+#add-product-to-basket-btn{
+    margin: 0px 10px;
+}
