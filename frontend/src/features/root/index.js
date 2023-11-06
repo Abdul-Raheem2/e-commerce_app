@@ -10,7 +10,7 @@ export default function Root(){
         <>
             <header>
                 <h1>Shop</h1>
-                {loggedIn ? <LoggedIn/>:<NotLoggedIn/>}
+                {loggedIn ? <LoggedIn setLoggedIn={setLoggedIn}/>:<NotLoggedIn/>}
             </header>
             <Outlet context={{setLoggedIn:setLoggedIn}}/>
         </>

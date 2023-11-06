@@ -8,6 +8,7 @@ export default function LogIn(){
     const {setLoggedIn} = useOutletContext();
     const [email,setEmail] = useState();
     const [password,setPassword]= useState();
+    
     async function handleSubmit(e){
         e.preventDefault();
         const response = await authLogIn(email,password);

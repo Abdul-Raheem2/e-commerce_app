@@ -26,3 +26,9 @@ export async function authRegister(email,password,firstName,lastName){
         },
     })
 }
+
+export async function authLogOut(){
+    return await fetch('http://localhost:3000/logout',{
+        method:'POST'
+    });
+}
