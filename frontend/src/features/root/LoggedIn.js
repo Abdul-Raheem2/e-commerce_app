@@ -17,9 +17,9 @@ export default function LoggedIn({setLoggedIn}){
     }
     return(
         <nav>
-            <Link>basket</Link>
-            <Link>account</Link>
-            <Link>orders</Link>
+            <Link to='/basket'>basket</Link>
+            <Link to='/account'>account</Link>
+            <Link to='/orders'>orders</Link>
             <Link onClick={handleLogOut}>Log Out</Link>
         </nav>
     )
