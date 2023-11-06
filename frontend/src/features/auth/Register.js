@@ -17,7 +17,6 @@ export default function Register(){
     async function handleSubmit(e){
         e.preventDefault();
         const registerResponse = await authRegister(email,password,firstName,lastName);
-        console.log(registerResponse);
         if(registerResponse.ok){
             const logInResponse = await authLogIn(email,password);
             if(logInResponse.ok){

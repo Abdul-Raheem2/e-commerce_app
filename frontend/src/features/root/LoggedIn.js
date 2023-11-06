@@ -8,7 +8,6 @@ export default function LoggedIn({setLoggedIn}){
     async function handleLogOut(e){
         e.preventDefault();
         const response  = await authLogOut();
-        console.log(response);
         if(response.ok){
             setLoggedIn(false);
             navigate('/');

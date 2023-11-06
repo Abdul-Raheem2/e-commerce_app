@@ -3,15 +3,20 @@ const passport = require('passport');
 const db = require('../db');
 const bcrypt = require('bcrypt');
 const e = require('express');
+const {check,validationResult} = require('express-validator');
 
 const authRouter = express.Router({mergeParams:true});
 
-authRouter.post('/register',async (req,res,next)=>{
+authRouter.post('/register',[
+    check('email').isEmail().normalizeEmail(),
+    check('password').isLength({min:8})
+],async (req,res,next)=>{
     try{
-        const {email,password,first_name:firstName,last_name:lastName} = req.body;
-        if(!email || !password){
-            return res.status(400).send('Enter a username and password');
+        if(!validationResult(req).isEmpty()){
+            console.log(validationResult(req));
+            return res.status(400).send('Enter a valid email and password');
         }
+        const {email,password,first_name:firstName,last_name:lastName} = req.body;
         const user = await db.userExists(email);
         if(user){
             return res.status(409).send('User already exists');
