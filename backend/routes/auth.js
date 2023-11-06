@@ -2,6 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const db = require('../db');
 const bcrypt = require('bcrypt');
+const e = require('express');
 
 const authRouter = express.Router({mergeParams:true});
 
@@ -25,26 +26,18 @@ authRouter.post('/register',async (req,res,next)=>{
 
 });
 
-authRouter.post("/login", passport.authenticate('local',{
-    successRedirect: '/login/success',
-    failureRedirect:'/login/failed'
-}));
-
-authRouter.get('/login/success',(req,res)=>{
+authRouter.post("/login", passport.authenticate('local'),(req,res)=>{
     if(req.isAuthenticated()){
-        res.send('Successfully logged in')
+        res.status(200).send();
     }else{
-        res.redirect('/login/failed');
+        res.status(401).send();
     }
-})
-authRouter.get('/login/failed',(req,res)=>{
-    res.send('Incorrect email or password');
-})
+});
 
 authRouter.post("/logout", (req, res,next) => {
     req.logout((err)=>{
         if(err){return next(error)}
-        res.redirect("/");
+        res.status(200).send();
     })
 });
 
