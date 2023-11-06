@@ -6,8 +6,9 @@ import { authLogIn } from "./auth";
 export default function LogIn(){
     const navigate = useNavigate();
     const {setLoggedIn} = useOutletContext();
-    const [email,setEmail] = useState();
-    const [password,setPassword]= useState();
+    
+    const [email,setEmail] = useState('');
+    const [password,setPassword]= useState('');
     
     async function handleSubmit(e){
         e.preventDefault();

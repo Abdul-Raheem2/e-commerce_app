@@ -1,10 +1,11 @@
 
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom"
-import { authRegister } from "./auth";
+import { useNavigate,useOutletContext } from "react-router-dom"
+import { authRegister,authLogIn } from "./auth";
 
 export default function Register(){
     const navigate = useNavigate();
+    const {setLoggedIn} = useOutletContext();
     const confirmPasswordRef = useRef(null);
 
     const [email,setEmail] = useState('');
@@ -15,12 +16,20 @@ export default function Register(){
 
     async function handleSubmit(e){
         e.preventDefault();
-        const response = await authRegister(email,password,firstName,lastName);
-        console.log(response);
-        if(response.ok){
-            navigate('/login');
+        const registerResponse = await authRegister(email,password,firstName,lastName);
+        console.log(registerResponse);
+        if(registerResponse.ok){
+            const logInResponse = await authLogIn(email,password);
+            if(logInResponse.ok){
+                setLoggedIn(true);
+                navigate('/');
+            }else{
+                alert('error auto login');
+            }
+        }else if(registerResponse.status === 409){
+            alert("email is already registered");
         }else{
-            alert("error");
+            alert("enter username/password");
         }
     }
 
