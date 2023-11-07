@@ -14,7 +14,7 @@ basketRouter.get('/',async (req,res,next)=>{
         const info = basketInfo(basket);
         res.json({
             ...info,
-            basket: basket
+            products: basket
         });
     }catch(err){
         next(err);
@@ -38,7 +38,7 @@ basketRouter.post('/',async (req,res,next)=>{
         if(error.code==='23503'){ //errors from db
             res.status(404).send('invalid product id');
         }else if (error.code ==='23505'){
-            res.status(400).send('product already in basket')
+            res.status(409).send('product already in basket')
         }
         else{next(error)}
     }

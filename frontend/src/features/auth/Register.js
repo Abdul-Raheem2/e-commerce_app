@@ -1,11 +1,13 @@
 
 import { useEffect, useRef, useState } from "react";
-import { useNavigate,useOutletContext } from "react-router-dom"
-import { authRegister,authLogIn } from "./auth";
+import { useNavigate} from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { apiRegister,apiLogIn } from "../../api/auth";
+import { setLoggedIn } from "../account/accountSlice";
 
 export default function Register(){
     const navigate = useNavigate();
-    const {setLoggedIn} = useOutletContext();
+    const dispatch = useDispatch();
     const confirmPasswordRef = useRef(null);
 
     const [email,setEmail] = useState('');
@@ -16,11 +18,11 @@ export default function Register(){
 
     async function handleSubmit(e){
         e.preventDefault();
-        const registerResponse = await authRegister(email,password,firstName,lastName);
+        const registerResponse = await apiRegister(email,password,firstName,lastName);
         if(registerResponse.ok){
-            const logInResponse = await authLogIn(email,password);
+            const logInResponse = await apiLogIn(email,password);
             if(logInResponse.ok){
-                setLoggedIn(true);
+                dispatch(setLoggedIn(true));
                 navigate('/');
             }else{
                 alert('error auto login');

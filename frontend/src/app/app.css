@@ -1,3 +1,6 @@
+*{
+    box-sizing: border-box;
+}
 
 header{
     border-bottom: thin solid black;
@@ -80,6 +83,7 @@ input[type="submit"]{
 
 #product-name{
     text-align: center;
+    margin-bottom: 15px;
 }
 
 #product-price{
@@ -90,4 +94,9 @@ input[type="submit"]{
 
 #add-product-to-basket-btn{
     margin: 0px 10px;
+}
+
+#product-quantity{
+    width:50px;
+    margin: 0px 0px 20px 30px;
 }

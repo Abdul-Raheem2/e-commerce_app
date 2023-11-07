@@ -18,7 +18,9 @@ const port = process.env.PORT;
 
 app.use(helmet());
 
-app.use(cors());
+app.use(cors({
+  origin:'http://localhost:3001',
+  credentials:true}));
 app.use(logger('dev'));
 
 app.use(express.json());
@@ -29,11 +31,12 @@ app.use(
     secret: process.env.SESSION_SECRET,
     cookie: { 
       maxAge: 1000*60*60*24,
-      //secure:true,
-      //httpOnly:true
+      //secure:false,
+      //httpOnly:true,
+      //sameSite:'none'
     },
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: true
   })
 );
 
@@ -51,8 +54,8 @@ app.use('/basket',basketRouter);
 const orderRouter = require('./routes/orders');
 app.use('/orders',orderRouter);
 
-const userRouter = require('./routes/user');
-app.use('/user',userRouter);
+const accountRouter = require('./routes/account');
+app.use('/account',accountRouter);
 
 const authRouter = require('./routes/auth');
 app.use('/',authRouter);

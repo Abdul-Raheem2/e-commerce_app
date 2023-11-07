@@ -3,15 +3,15 @@ const db = require('../db');
 const bcrypt = require('bcrypt');
 const checkAuthenticated = require('../utils/authenticated');
 
-const userRouter = express.Router({mergeParams:true});
+const accountRouter = express.Router({mergeParams:true});
 
-userRouter.use(checkAuthenticated);
+accountRouter.use(checkAuthenticated);
 
-userRouter.get('/',(req,res)=>{
+accountRouter.get('/',(req,res)=>{
     res.send(req.user);
 })
 
-userRouter.put('/',async (req,res,next)=>{
+accountRouter.put('/',async (req,res,next)=>{
     try{
         let updatedUser = req.user;
         let newValues = false;
@@ -35,7 +35,7 @@ userRouter.put('/',async (req,res,next)=>{
     }catch(error){next(error)}
 })
 
-userRouter.put('/password',async (req,res,next)=>{
+accountRouter.put('/password',async (req,res,next)=>{
     try{
         const {currentPassword,newPassword}= req.body;
         if(!newPassword || !currentPassword){
@@ -53,7 +53,7 @@ userRouter.put('/password',async (req,res,next)=>{
     }catch(err){next(err)}
 })
 
-userRouter.delete('/',(req,res,next)=>{
+accountRouter.delete('/',(req,res,next)=>{
     try{
         db.deleteUser(req.user.id);
         req.logout((err)=>{
@@ -63,4 +63,4 @@ userRouter.delete('/',(req,res,next)=>{
     }catch(error){next(error)}
 })
 
-module.exports = userRouter;
+module.exports = accountRouter;

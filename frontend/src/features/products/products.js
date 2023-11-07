@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "./productsSlice"
 import { useEffect } from "react";
 
-import { Product } from "./Product";
+import { Product } from "../../components/Product";
 
 export default function Products(){
     const dispatch = useDispatch();

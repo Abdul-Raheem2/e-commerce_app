@@ -1,12 +1,12 @@
-
+import './app.css';
 import {RouterProvider,Route,createBrowserRouter,createRoutesFromElements} from 'react-router-dom';
-import Root from './features/root';
-import Products from './features/products';
-import Register from './features/auth/Register';
-import LogIn from './features/auth/LogIn';
-import Orders from './features/orders';
-import Basket from './features/basket';
-import Account from './features/account';
+import Root from '../features/root/root';
+import Products from '../features/products/products';
+import Register from '../features/auth/Register';
+import LogIn from '../features/auth/LogIn';
+import Orders from '../features/orders/orders';
+import Basket from '../features/basket/basket';
+import Account from '../features/account';
 
 const appRouter = createBrowserRouter(createRoutesFromElements(
   <Route path="/" element={<Root/>}>

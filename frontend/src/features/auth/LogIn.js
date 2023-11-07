@@ -1,20 +1,22 @@
 
 import { useState } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom"
-import { authLogIn } from "./auth";
+import { useNavigate} from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { apiLogIn } from "../../api/auth";
+import { setLoggedIn } from "../account/accountSlice";
 
 export default function LogIn(){
     const navigate = useNavigate();
-    const {setLoggedIn} = useOutletContext();
+    const dispatch = useDispatch();
     
     const [email,setEmail] = useState('');
     const [password,setPassword]= useState('');
     
     async function handleSubmit(e){
         e.preventDefault();
-        const response = await authLogIn(email,password);
+        const response = await apiLogIn(email,password);
         if(response.ok){
-            setLoggedIn(true);
+            dispatch(setLoggedIn(true));
             navigate('/');
         }else{
             alert('Incorrect username or password');

@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { apiFetchProducts } from "../../api/products";
 
 export const fetchProducts = createAsyncThunk(
     'products/fetchProducts',
     async () => {
-        const response = await fetch('http://localhost:3000/products');
-        return await response.json();
+        return await (await apiFetchProducts()).json();
     }
 )
 
@@ -13,12 +13,25 @@ const productsSlice = createSlice({
     initialState: {
         products:[]
     },
+    reducers:{
+        updateQuantity(state,action){
+            const {id,quantity} = action.payload;
+            const index = state.products.findIndex((product)=>product.id===id);
+            state.products[index].quantityInBasket = quantity;
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(fetchProducts.fulfilled,(state,action)=>{
-            state.products=action.payload;
+            state.products=action.payload.map((product)=>{
+                return {
+                    ...product,
+                    quantityInBasket: 0
+                }
+            });
         })
     }
 
 });
 
+export const {updateQuantity} = productsSlice.actions;
 export default productsSlice.reducer;

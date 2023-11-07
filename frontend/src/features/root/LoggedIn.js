@@ -1,15 +1,18 @@
 import { Link } from "react-router-dom";
-import { authLogOut } from "../auth/auth";
+import { apiLogOut } from "../../api/auth";
 import { useNavigate} from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setLoggedIn } from "../account/accountSlice";
 
-export default function LoggedIn({setLoggedIn}){
+export default function LoggedIn(){
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     async function handleLogOut(e){
         e.preventDefault();
-        const response  = await authLogOut();
+        const response  = await apiLogOut();
         if(response.ok){
-            setLoggedIn(false);
+            dispatch(setLoggedIn(false));
             navigate('/');
         }else{
             alert("error");
