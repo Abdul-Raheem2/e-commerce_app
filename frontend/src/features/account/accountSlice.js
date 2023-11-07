@@ -20,8 +20,9 @@ const accountSlice = createSlice({
         account:{}
     },
     reducers:{
-        setLoggedIn(state,action){
-            state.loggedIn = action.payload;
+        accountLogOut(state,action){
+            state.loggedIn=false;
+            state.account={};
         }
     },
     extraReducers: (builder) => {
@@ -31,10 +32,11 @@ const accountSlice = createSlice({
                 state.account = action.payload
             }else{
                 state.loggedIn=false;
+                state.account = {};
             }
         })
     }
 });
 
-export const {setLoggedIn} = accountSlice.actions;
+export const {accountLogOut} = accountSlice.actions;
 export default accountSlice.reducer;

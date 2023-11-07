@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate} from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { apiLogIn } from "../../api/auth";
-import { setLoggedIn } from "../account/accountSlice";
+import { fetchAccountDetails} from "../account/accountSlice";
 
 export default function LogIn(){
     const navigate = useNavigate();
@@ -16,7 +16,7 @@ export default function LogIn(){
         e.preventDefault();
         const response = await apiLogIn(email,password);
         if(response.ok){
-            dispatch(setLoggedIn(true));
+            dispatch(fetchAccountDetails());
             navigate('/');
         }else{
             alert('Incorrect username or password');

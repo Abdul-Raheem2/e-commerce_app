@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate} from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { apiRegister,apiLogIn } from "../../api/auth";
-import { setLoggedIn } from "../account/accountSlice";
+import { fetchAccountDetails, setLoggedIn } from "../account/accountSlice";
 
 export default function Register(){
     const navigate = useNavigate();
@@ -22,7 +22,7 @@ export default function Register(){
         if(registerResponse.ok){
             const logInResponse = await apiLogIn(email,password);
             if(logInResponse.ok){
-                dispatch(setLoggedIn(true));
+                dispatch(fetchAccountDetails());
                 navigate('/');
             }else{
                 alert('error auto login');

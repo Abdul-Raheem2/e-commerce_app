@@ -5,7 +5,10 @@ import { apiFetchBasket,apiAddProductToBasket } from "../../api/basket";
 export const fetchBasket = createAsyncThunk(
     'basket/fetchBasket',
     async () => {
-        return await (await apiFetchBasket()).json();
+        const response = await apiFetchBasket();
+        if(response.ok){
+            return await response.json();
+        }
     }
 )
 export const addProductToBasket = createAsyncThunk(
@@ -20,6 +23,11 @@ const basketSlice = createSlice({
     initialState:{
         basket:{}
     },
+    reducers:{
+        basketLogOut(state,action){
+            state.basket = {};
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(fetchBasket.fulfilled,(state,action)=>{
             console.log(action.payload);
@@ -28,4 +36,5 @@ const basketSlice = createSlice({
     }
 });
 
+export const {basketLogOut} = basketSlice.actions;
 export default basketSlice.reducer;

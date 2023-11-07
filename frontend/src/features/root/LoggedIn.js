@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { apiLogOut } from "../../api/auth";
 import { useNavigate} from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setLoggedIn } from "../account/accountSlice";
+import { accountLogOut } from "../account/accountSlice";
+import { basketLogOut } from "../basket/basketSlice";
 
 export default function LoggedIn(){
     const dispatch = useDispatch();
@@ -12,7 +13,8 @@ export default function LoggedIn(){
         e.preventDefault();
         const response  = await apiLogOut();
         if(response.ok){
-            dispatch(setLoggedIn(false));
+            dispatch(accountLogOut());
+            dispatch(basketLogOut());
             navigate('/');
         }else{
             alert("error");
