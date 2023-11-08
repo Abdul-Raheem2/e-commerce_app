@@ -1,16 +1,15 @@
 const express = require('express');
 const db = require('../db');
-const basketInfo = require('../utils/basket');
-const checkAuthenticated = require('../utils/authenticated');
+const {basketInfo,checkBasket} = require('../utils/basket');
+//const checkAuthenticated = require('../utils/authenticated');
 
 const basketRouter = express.Router({mergeParams:true});
 
-
-basketRouter.use(checkAuthenticated);
+basketRouter.use(checkBasket);
 
 basketRouter.get('/',async (req,res,next)=>{
     try{
-        const basket = await db.basketByUserID(req.user.id);
+        const basket = await db.basketById(req.session.basketId);
         const info = basketInfo(basket);
         res.json({
             ...info,
@@ -32,8 +31,8 @@ basketRouter.post('/',async (req,res,next)=>{
         }else if(!Number.isInteger(productId) || !Number.isInteger(quantity) || quantity <0){
             return res.status(400).send('invalid product id or quantity');
         }
-        const newProduct = await db.addToBasket(req.user.id,productId,quantity);
-        res.status(201).json(newProduct);
+        await db.addToBasket(req.session.basketId,productId,quantity);
+        res.status(201).send();
     }catch(error){
         if(error.code==='23503'){ //errors from db
             res.status(404).send('invalid product id');
@@ -55,15 +54,16 @@ basketRouter.put('/',async (req,res,next)=>{
             return res.status(400).send('invalid product id or quantity');
         }
         if (quantity ===0){
-            await db.deleteFromBasket(req.user.id,productId);
+            await db.deleteFromBasket(req.session.basketId,productId);
             return res.status(204).send();
         }
-        const updatedProduct = await db.updateProductQuantity(req.user.id,productId,quantity);
+        const updatedProduct = await db.updateProductQuantity(req.session.basketId,productId,quantity);
+        console.log(updatedProduct);
         if(updatedProduct){
-            return res.status(200).json(updatedProduct);
+            return res.status(200).send();
         }
-        const newProduct = await db.addToBasket(req.user.id,productId,quantity);
-        res.status(201).json(newProduct);
+        const newProduct = await db.addToBasket(req.session.basketId,productId,quantity);
+        res.status(201).send();
     }catch(error){
         if(error.code==='23503'){ //errors from db
             res.status(404).send('invalid product id');
@@ -79,7 +79,7 @@ basketRouter.delete('/:productId',async (req,res,next)=>{
         if(!productId || !Number.isInteger(productId)){
             return res.status(400).send('invalid product id');
         }
-        await db.deleteFromBasket(req.user.id,productId);
+        await db.deleteFromBasket(req.session.basketId,productId);
         res.status(204).send();
     }catch(error){
         next(error);
@@ -89,7 +89,7 @@ basketRouter.delete('/:productId',async (req,res,next)=>{
 basketRouter.post('/checkout', async (req,res,next)=>{
     const {paymentInfo} = req.body;
 
-    const basket = await db.basketByUserID(req.user.id);
+    const basket = await db.basketById(req.session.basketId);
     const info = basketInfo(basket);
     const order = await db.newOrder(req.user.id,info.numProducts,info.total);
     //process payment
@@ -97,8 +97,8 @@ basketRouter.post('/checkout', async (req,res,next)=>{
         return([`${order.id}`,`${product.product_id}`,`${product.quantity}`]);
     });
     await db.addProductsToOrder(values);
-    await db.deleteBasket(req.user.id);
-    res.send('order created');
+    await db.deleteBasket(req.session.basketId);
+    res.send();
 })
 
 module.exports = basketRouter;

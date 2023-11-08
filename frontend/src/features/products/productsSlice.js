@@ -13,25 +13,12 @@ const productsSlice = createSlice({
     initialState: {
         products:[]
     },
-    reducers:{
-        updateQuantity(state,action){
-            const {id,quantity} = action.payload;
-            const index = state.products.findIndex((product)=>product.id===id);
-            state.products[index].quantityInBasket = quantity;
-        }
-    },
     extraReducers: (builder) => {
         builder.addCase(fetchProducts.fulfilled,(state,action)=>{
-            state.products=action.payload.map((product)=>{
-                return {
-                    ...product,
-                    quantityInBasket: 0
-                }
-            });
+            state.products=action.payload;
         })
     }
 
 });
 
-export const {updateQuantity} = productsSlice.actions;
 export default productsSlice.reducer;

@@ -58,45 +58,82 @@ const productById = async (id) => {
 
 //basket
 
-const basketByUserID = async (userId) => {
-    return (await pool.query(`SELECT products.id AS product_id,products.name AS name,products.price AS price,
-    products.category AS category,baskets_products.quantity AS quantity FROM baskets_products 
-    INNER JOIN products ON products.id = baskets_products.product_id WHERE user_id = $1`,[userId])).rows;
+const newBasket = async (userId) =>{
+    if(userId){
+        return (await pool.query('INSERT INTO baskets (user_id) VALUES ($1) RETURNING id',[userId])).rows[0];
+    }else{
+        return (await pool.query('INSERT INTO baskets DEFAULT VALUES RETURNING id')).rows[0];
+    }
 }
 
-const addToBasket = async (userId,productId,quantity) => {
-    await pool.query(`INSERT INTO baskets_products (user_id,product_id,quantity) VALUES ($1,$2,$3)`,
-    [userId,productId,quantity]);
+const checkUserBasket = async (userId) =>{
+    const basket = await pool.query('SELECT id FROM baskets WHERE user_id = $1 LIMIT 1',[userId]);
+    if(basket.rowCount){
+        return basket.rows[0];
+    }else{
+        return false;
+    }
+}
+
+const combineBaskets = async (newId,oldId) => {
+    const oldBasket = (await pool.query('DELETE FROM baskets_products WHERE basket_id IN ($1,$2) RETURNING *',[oldId,newId])).rows;
+    let newBasket = [];
+    oldBasket.forEach((row)=>{
+        const duplicateIndex = newBasket.findIndex((newRow)=>newRow[1]===row.product_id);
+        if(duplicateIndex === -1){
+            newBasket.push([newId,row.product_id,row.quantity])
+        }else{
+            newBasket[duplicateIndex][2] += row.quantity;
+        }
+    });
+    await pool.query('DELETE FROM baskets WHERE id = $1',[oldId]);
+    await pool.query(format('INSERT INTO baskets_products (basket_id,product_id,quantity) VALUES %L',newBasket));
+}
+
+const setUserBasket = async (userId,basketId) => {
+    await pool.query('UPDATE baskets SET user_id=$1 WHERE id=$2',[userId,basketId]);
+}
+
+const basketById = async (basketId) => {
     return (await pool.query(`SELECT products.id AS product_id,products.name AS name,products.price AS price,
+    products.category AS category,baskets_products.quantity AS quantity FROM baskets_products 
+    INNER JOIN products ON products.id = baskets_products.product_id WHERE basket_id = $1`,[basketId])).rows;
+}
+
+const addToBasket = async (basketId,productId,quantity) => {
+    await pool.query(`INSERT INTO baskets_products (basket_id,product_id,quantity) VALUES ($1,$2,$3)`,
+    [basketId,productId,quantity]);
+/*     return (await pool.query(`SELECT products.id AS product_id,products.name AS name,products.price AS price,
     products.category AS category,baskets_products.quantity AS quantity FROM baskets_products 
     INNER JOIN products ON products.id = baskets_products.product_id WHERE user_id = $1 AND product_id = $2 LIMIT 1`,
-    [userId,productId])).rows[0];
+    [userId,productId])).rows[0]; */
 }
 
-const updateProductQuantity = async (userId,productId,quantity) => {
-    const updatedProduct = await pool.query(`UPDATE baskets_products SET quantity = $3 WHERE user_id = $1 AND product_id = $2 RETURNING *`,
-    [userId,productId,quantity]);
-    if(updatedProduct.rowCount ===1){
+const updateProductQuantity = async (basketId,productId,quantity) => {
+    const updatedProduct = await pool.query(`UPDATE baskets_products SET quantity = $3 WHERE basket_id = $1 AND product_id = $2 RETURNING *`,
+    [basketId,productId,quantity]);
+    return updatedProduct.rowCount;
+/*     if(updatedProduct.rowCount ===1){
         return (await pool.query(`SELECT products.id AS product_id,products.name AS name,products.price AS price,
         products.category AS category,baskets_products.quantity AS quantity FROM baskets_products 
         INNER JOIN products ON products.id = baskets_products.product_id WHERE user_id = $1 AND product_id = $2 LIMIT 1`,
         [userId,productId])).rows[0];
-    }
+    } */
 }
 
-const deleteFromBasket = async (userId,productId) => {
-    await pool.query('DELETE FROM baskets_products WHERE user_id = $1 and product_id = $2',[userId,productId]);
+const deleteFromBasket = async (basketId,productId) => {
+    await pool.query('DELETE FROM baskets_products WHERE basket_id = $1 and product_id = $2',[basketId,productId]);
 }
 
-//orders (checkout)
+//checkout
 
 const newOrder = async (userId,numProducts,totalCost) => {
     return (await pool.query(`INSERT INTO orders (user_id,order_date,num_products,total_cost,status)
     VALUES ($1,NOW(),$2,$3,$4) RETURNING *`,[userId,numProducts,totalCost,'pending'])).rows[0];
 }
 
-const deleteBasket = async (userId) => {
-    await pool.query('DELETE FROM baskets_products WHERE user_id = $1',[userId]);
+const deleteBasket = async (basketId) => {
+    await pool.query('DELETE FROM baskets WHERE id = $1',[basketId]);
 }
 
 const addProductsToOrder = async (values) => {
@@ -134,7 +171,11 @@ module.exports ={
     allProducts,
     productsByCategory,
     productById,
-    basketByUserID,
+    newBasket,
+    checkUserBasket,
+    combineBaskets,
+    setUserBasket,
+    basketById,
     addToBasket,
     deleteFromBasket,
     updateProductQuantity,

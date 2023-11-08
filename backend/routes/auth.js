@@ -2,7 +2,6 @@ const express = require('express');
 const passport = require('passport');
 const db = require('../db');
 const bcrypt = require('bcrypt');
-const e = require('express');
 const {check,validationResult} = require('express-validator');
 
 const authRouter = express.Router({mergeParams:true});
@@ -31,8 +30,25 @@ authRouter.post('/register',[
 
 });
 
-authRouter.post("/login", passport.authenticate('local'),(req,res)=>{
+authRouter.post("/login",(req,res,next)=>{
+    res.locals.basketId = req.session.basketId;
+    next();
+},passport.authenticate('local'),async (req,res)=>{
     if(req.isAuthenticated()){
+        const basket = await db.checkUserBasket(req.user.id);
+        if(basket){
+            if(res.locals.basketId){
+                await db.combineBaskets(basket.id,res.locals.basketId);
+            }
+            req.session.basketId = basket.id;
+        }else{
+            if(res.locals.basketId){
+                db.setUserBasket(req.user.id,res.locals.basketId);
+            }else{
+                const newBasket = await db.newBasket(req.user.id);
+                req.session.basketId = newBasket.id;
+            }
+        }
         res.status(200).send();
     }else{
         res.status(401).send();
