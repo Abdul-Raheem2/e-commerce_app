@@ -7,9 +7,10 @@ export default function NotLoggedIn(){
         navigate('/');
     },[navigate]);
     return(
-        <nav>
-            <NavLink to='/register'>Register</NavLink>
-            <NavLink to='/logIn'>Log In</NavLink>
-        </nav>
+        <div className="dropdown-content">
+            <NavLink className="dropdown-link" to='/register'>Register</NavLink>
+            <NavLink className="dropdown-link" to='/logIn'>Log In</NavLink>
+        </div>
+
     )
 }

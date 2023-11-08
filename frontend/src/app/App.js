@@ -37,7 +37,6 @@ function App() {
         if(response.status===401){
           dispatch(accountLogOut());
           dispatch(basketLogOut());
-          alert('log in first');
         }
         return response;
     };

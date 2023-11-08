@@ -17,15 +17,14 @@ export default function LoggedIn(){
             dispatch(basketLogOut());
             navigate('/');
         }else{
-            alert("error");
+            //alert("error");
         }
     }
     return(
-        <nav>
-            <Link to='/basket'>basket</Link>
-            <Link to='/account'>account</Link>
-            <Link to='/orders'>orders</Link>
-            <Link onClick={handleLogOut}>Log Out</Link>
-        </nav>
+        <div className="dropdown-content">
+            <Link className="dropdown-link" to='/account'>account</Link>
+            <Link className="dropdown-link" to='/orders'>orders</Link>
+            <Link className="dropdown-link" onClick={handleLogOut}>Log Out</Link>
+        </div>
     )
 }

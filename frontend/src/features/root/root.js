@@ -1,10 +1,13 @@
 import { useEffect} from "react";
 import { useDispatch } from "react-redux";
-import { Outlet ,useNavigate} from "react-router-dom";
+import { Link,Outlet ,useNavigate} from "react-router-dom";
 import LoggedIn from "./LoggedIn";
 import NotLoggedIn from "./NotLoggedIn";
 import { useSelector } from "react-redux";
 import { checkLoggedIn } from "../account/accountSlice";
+
+import { FaShoppingBasket,FaUserCircle } from "react-icons/fa";
+
 
 export default function Root(){
     const navigate = useNavigate();
@@ -18,7 +21,13 @@ export default function Root(){
         <>
             <header>
                 <h1 onClick={(e)=>{navigate('/')}}>Colour Shop</h1>
-                {account.loggedIn ? <LoggedIn/>:<NotLoggedIn/>}
+                <nav>
+                    <Link to='/basket'><FaShoppingBasket className="icon"/></Link>
+                    <div className="dropdown">
+                        <FaUserCircle className="icon dropbtn"/>
+                        {account.loggedIn ? <LoggedIn/>:<NotLoggedIn/>}
+                    </div>
+                </nav>
             </header>
             <Outlet/>
         </>

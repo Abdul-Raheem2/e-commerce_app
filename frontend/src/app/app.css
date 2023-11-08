@@ -4,18 +4,26 @@
 
 header{
     border-bottom: thin solid black;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
 
 h1{
-    display: inline-block;
-    width:50%;
+    font-size: 40px;
+    display: block;
     text-align: center;
 }
 
 nav{
-    display: inline-flex;
-    width:50%;
+    display: flex;
     justify-content: space-around;
+}
+
+.icon{
+    width:50px;
+    height:50px;
+    margin-top:25px;
+    color: rgb(93, 93, 93);
 }
 
 /* Register/Login */
@@ -100,3 +108,24 @@ input[type="submit"]{
     width:50px;
     margin: 0px 0px 20px 30px;
 }
+
+/*dropdown */
+
+.dropdown-content {
+    background-color: gray;
+    display: none;
+    position: absolute;
+    min-width: 160px;
+    z-index: 1;
+}
+
+.dropdown-link {
+    text-align: center;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown:hover .dropdown-content {display: block;}
+
