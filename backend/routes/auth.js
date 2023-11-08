@@ -32,7 +32,11 @@ authRouter.post('/register',[
 
 authRouter.post("/login",(req,res,next)=>{
     res.locals.basketId = req.session.basketId;
-    next();
+    if(req.isAuthenticated()){
+        res.status(200).send();
+    }else{
+        next();
+    }
 },passport.authenticate('local'),async (req,res)=>{
     if(req.isAuthenticated()){
         const basket = await db.checkUserBasket(req.user.id);

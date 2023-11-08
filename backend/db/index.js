@@ -87,7 +87,7 @@ const combineBaskets = async (newId,oldId) => {
         }
     });
     await pool.query('DELETE FROM baskets WHERE id = $1',[oldId]);
-    await pool.query(format('INSERT INTO baskets_products (basket_id,product_id,quantity) VALUES %L',newBasket));
+    if(newBasket.length){await pool.query(format('INSERT INTO baskets_products (basket_id,product_id,quantity) VALUES %L',newBasket))};
 }
 
 const setUserBasket = async (userId,basketId) => {
