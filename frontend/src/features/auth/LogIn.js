@@ -4,6 +4,7 @@ import { useNavigate} from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { apiLogIn } from "../../api/auth";
 import { checkLoggedIn} from "../account/accountSlice";
+import { fetchBasket } from "../basket/basketSlice";
 
 export default function LogIn(){
     const navigate = useNavigate();
@@ -17,7 +18,8 @@ export default function LogIn(){
         const response = await apiLogIn(email,password);
         if(response.ok){
             dispatch(checkLoggedIn());
-            navigate('/');
+            dispatch(fetchBasket());
+            navigate('/products');
         }else{
             alert('Incorrect username or password');
         }

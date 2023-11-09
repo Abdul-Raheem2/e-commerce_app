@@ -17,13 +17,32 @@ productRouter.get('/',async (req,res)=>{
     }
 })
 
-productRouter.get('/:productId',async (req,res,next)=>{
+productRouter.get('/categories',async (req,res,next)=>{
     try{
-        const product = await db.productById(req.params.productId);
-        res.json(product);
+        const categories = await db.categories();
+        res.json(categories.map((category)=>category.category));
     }catch(error){
         next(error);
     }
 })
+
+productRouter.get('/:productId',async (req,res,next)=>{
+    try{
+        let {productId} = req.params;
+        productId = Number(productId);
+        if(!productId || !Number.isInteger(productId)){
+            return res.status(400).send('invalid product id');
+        }
+        const product = await db.productById(productId);
+        if(product){
+            res.json(product);
+        }else{
+            res.status(404).send();
+        }
+    }catch(error){
+        next(error);
+    }
+})
+
 
 module.exports = productRouter;

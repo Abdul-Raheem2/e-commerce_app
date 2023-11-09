@@ -4,6 +4,7 @@ import { useNavigate} from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { apiRegister,apiLogIn } from "../../api/auth";
 import { checkLoggedIn } from "../account/accountSlice";
+import { fetchBasket } from "../basket/basketSlice";
 
 export default function Register(){
     const navigate = useNavigate();
@@ -23,7 +24,8 @@ export default function Register(){
             const logInResponse = await apiLogIn(email,password);
             if(logInResponse.ok){
                 dispatch(checkLoggedIn());
-                navigate('/');
+                dispatch(fetchBasket());
+                navigate('/products');
             }else{
                 alert('error auto login');
             }

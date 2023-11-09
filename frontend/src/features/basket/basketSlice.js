@@ -23,18 +23,11 @@ const basketSlice = createSlice({
     initialState:{
         basket:{}
     },
-    reducers:{
-        basketLogOut(state,action){
-            state.basket = {};
-        }
-    },
     extraReducers: (builder) => {
         builder.addCase(fetchBasket.fulfilled,(state,action)=>{
-            console.log(action.payload);
             state.basket = action.payload;
         })
     }
 });
 
-export const {basketLogOut} = basketSlice.actions;
 export default basketSlice.reducer;

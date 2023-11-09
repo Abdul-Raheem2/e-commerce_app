@@ -5,9 +5,7 @@ export const checkLoggedIn = createAsyncThunk(
     'account/checkLoggedIn',
     async () => {
         const response = await apiFetchAccountDetails();
-        if(response.status===401){
-            return false;
-        }else{
+        if(response.ok){
             return await response.json();
         }
     }
@@ -19,17 +17,11 @@ const accountSlice = createSlice({
         loggedIn:false,
         account:{}
     },
-    reducers:{
-        accountLogOut(state,action){
-            state.loggedIn=false;
-            state.account={};
-        }
-    },
     extraReducers: (builder) => {
         builder.addCase(checkLoggedIn.fulfilled,(state,action)=>{
-            if(action.payload){
+            if(action.payload.loggedIn){
                 state.loggedIn = true;
-                state.account = action.payload
+                state.account = action.payload.account;
             }else{
                 state.loggedIn=false;
                 state.account = {};
@@ -38,5 +30,4 @@ const accountSlice = createSlice({
     }
 });
 
-export const {accountLogOut} = accountSlice.actions;
 export default accountSlice.reducer;

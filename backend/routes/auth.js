@@ -48,6 +48,7 @@ authRouter.post("/login",(req,res,next)=>{
         }else{
             if(res.locals.basketId){
                 db.setUserBasket(req.user.id,res.locals.basketId);
+                req.session.basketId = res.locals.basketId;
             }else{
                 const newBasket = await db.newBasket(req.user.id);
                 req.session.basketId = newBasket.id;

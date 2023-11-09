@@ -45,17 +45,20 @@ const deleteUser = async (id) => {
 //products
 
 const allProducts = async () => {
-    return (await pool.query('SELECT id,name,price,image,category FROM products WHERE active = True')).rows;
+    return (await pool.query('SELECT id,name,price,image FROM products WHERE active = True')).rows;
 }
 
 const productsByCategory = async (category) => {
-    return (await pool.query('SELECT id,name,price,image,category FROM products WHERE category = $1 AND active = True',[category])).rows;
+    return (await pool.query('SELECT id,name,price,image FROM products WHERE category = $1 AND active = True',[category])).rows;
 }
 
 const productById = async (id) => {
-    return (await pool.query('SELECT id,name,description,price,image,category FROM products WHERE id = $1 LIMIT 1',[id])).rows[0];
+    return (await pool.query('SELECT id,name,description,price,image FROM products WHERE id = $1 LIMIT 1',[id])).rows[0];
 }
 
+const categories = async () => {
+    return (await pool.query('SELECT DISTINCT category FROM products')).rows;
+}
 //basket
 
 const newBasket = async (userId) =>{
@@ -171,6 +174,7 @@ module.exports ={
     allProducts,
     productsByCategory,
     productById,
+    categories,
     newBasket,
     checkUserBasket,
     combineBaskets,

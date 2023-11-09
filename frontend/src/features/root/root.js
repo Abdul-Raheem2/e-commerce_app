@@ -16,11 +16,12 @@ export default function Root(){
     const account = useSelector((state)=>state.account);
     useEffect(()=>{
         dispatch(checkLoggedIn());
-    },[dispatch]);
+        navigate('/products');
+    },[dispatch,navigate]);
     return(
         <>
             <header>
-                <h1 onClick={(e)=>{navigate('/')}}>Colour Shop</h1>
+                <h1 onClick={(e)=>{navigate('/products')}}>Colour Shop</h1>
                 <nav>
                     <Link to='/basket'><FaShoppingBasket className="icon"/></Link>
                     <div className="dropdown">

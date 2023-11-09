@@ -8,9 +8,14 @@ const accountRouter = express.Router({mergeParams:true});
 
 accountRouter.get('/',async (req,res)=>{
     if(req.isAuthenticated()){
-        res.send(req.user);
+        res.json({
+            account:req.user,
+            loggedIn:true,
+        });
     }else{
-        res.status(401).json();
+        res.json({
+            loggedIn:false
+        });
     }
 })
 
