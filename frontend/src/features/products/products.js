@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Select from 'react-select'
 
 import DisplayProduct from "../../components/DisplayProduct";
+import { fetchBasket } from '../basket/basketSlice';
 
 export default function Products(){
     const dispatch = useDispatch();
@@ -12,6 +13,7 @@ export default function Products(){
 
     useEffect(()=>{
         dispatch(fetchCategories());
+        dispatch(fetchBasket());
     },[dispatch])
 
     useEffect(()=>{
@@ -29,10 +31,9 @@ export default function Products(){
     function handleCategoryChange(category){
         setSelectedCategory(category);
     }
-    console.log(selectedCategory.value);
     return (
         <>
-            <label for="select-category">Category</label>
+            <label htmlFor="select-category">Category</label>
             <Select id="select-category"value={selectedCategory} onChange={handleCategoryChange} options={categories}/>
             <div id="products">
                 {products.map((product)=>{

@@ -5,16 +5,37 @@ export const apiFetchBasket = async () => {
     });
 }
 
-export const apiAddProductToBasket = async (productId) => {
+export const apiAddProductToBasket = async (productId,quantity) => {
     return await fetch(`${process.env.REACT_APP_BASE_URL}/basket`,{
         method:'POST',
         credentials:'include',
         body: JSON.stringify({
             productId,
-            quantity:1
+            quantity
         }),
         headers: {
             "Content-Type": "application/json",
         },
+    });
+}
+
+export const apiUpdateQuantity = async (productId,quantity) =>{
+    return await fetch(`${process.env.REACT_APP_BASE_URL}/basket`,{
+        method:'PUT',
+        credentials:'include',
+        body: JSON.stringify({
+            productId,
+            quantity
+        }),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+}
+
+export const apiRemoveFromBasket = async (productId) =>{
+    return await fetch(`${process.env.REACT_APP_BASE_URL}/basket/${productId}`,{
+        method:'DELETE',
+        credentials:'include'
     });
 }

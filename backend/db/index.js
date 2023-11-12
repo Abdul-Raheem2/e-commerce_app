@@ -98,14 +98,14 @@ const setUserBasket = async (userId,basketId) => {
 }
 
 const basketById = async (basketId) => {
-    return (await pool.query(`SELECT products.id AS product_id,products.name AS name,products.price AS price,
-    products.category AS category,baskets_products.quantity AS quantity FROM baskets_products 
+    return (await pool.query(`SELECT products.id AS id,products.name AS name,products.price AS price,
+    products.image AS image,baskets_products.quantity AS quantity FROM baskets_products 
     INNER JOIN products ON products.id = baskets_products.product_id WHERE basket_id = $1`,[basketId])).rows;
 }
 
 const addToBasket = async (basketId,productId,quantity) => {
-    await pool.query(`INSERT INTO baskets_products (basket_id,product_id,quantity) VALUES ($1,$2,$3)`,
-    [basketId,productId,quantity]);
+    return (await pool.query(`INSERT INTO baskets_products (basket_id,product_id,quantity) VALUES ($1,$2,$3) RETURNING product_id AS id,quantity`,
+    [basketId,productId,quantity])).rows[0];
 /*     return (await pool.query(`SELECT products.id AS product_id,products.name AS name,products.price AS price,
     products.category AS category,baskets_products.quantity AS quantity FROM baskets_products 
     INNER JOIN products ON products.id = baskets_products.product_id WHERE user_id = $1 AND product_id = $2 LIMIT 1`,
@@ -113,15 +113,11 @@ const addToBasket = async (basketId,productId,quantity) => {
 }
 
 const updateProductQuantity = async (basketId,productId,quantity) => {
-    const updatedProduct = await pool.query(`UPDATE baskets_products SET quantity = $3 WHERE basket_id = $1 AND product_id = $2 RETURNING *`,
+    const updatedProduct = await pool.query(`UPDATE baskets_products SET quantity = $3 WHERE basket_id = $1 AND product_id = $2 RETURNING product_id AS id,quantity`,
     [basketId,productId,quantity]);
-    return updatedProduct.rowCount;
-/*     if(updatedProduct.rowCount ===1){
-        return (await pool.query(`SELECT products.id AS product_id,products.name AS name,products.price AS price,
-        products.category AS category,baskets_products.quantity AS quantity FROM baskets_products 
-        INNER JOIN products ON products.id = baskets_products.product_id WHERE user_id = $1 AND product_id = $2 LIMIT 1`,
-        [userId,productId])).rows[0];
-    } */
+    if(updatedProduct.rowCount ===1){
+        return updatedProduct.rows[0];
+    }else{return false}
 }
 
 const deleteFromBasket = async (basketId,productId) => {

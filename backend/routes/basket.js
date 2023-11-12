@@ -31,8 +31,8 @@ basketRouter.post('/',async (req,res,next)=>{
         }else if(!Number.isInteger(productId) || !Number.isInteger(quantity) || quantity <0){
             return res.status(400).send('invalid product id or quantity');
         }
-        await db.addToBasket(req.session.basketId,productId,quantity);
-        res.status(201).send();
+        const newProduct = await db.addToBasket(req.session.basketId,productId,quantity);
+        res.status(201).json(newProduct);
     }catch(error){
         if(error.code==='23503'){ //errors from db
             res.status(404).send('invalid product id');
@@ -58,12 +58,11 @@ basketRouter.put('/',async (req,res,next)=>{
             return res.status(204).send();
         }
         const updatedProduct = await db.updateProductQuantity(req.session.basketId,productId,quantity);
-        console.log(updatedProduct);
         if(updatedProduct){
-            return res.status(200).send();
+            return res.status(200).json(updatedProduct);
         }
         const newProduct = await db.addToBasket(req.session.basketId,productId,quantity);
-        res.status(201).send();
+        res.status(201).json(newProduct);
     }catch(error){
         if(error.code==='23503'){ //errors from db
             res.status(404).send('invalid product id');
