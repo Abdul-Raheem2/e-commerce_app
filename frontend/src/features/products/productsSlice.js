@@ -53,7 +53,7 @@ const productsSlice = createSlice({
             })
             state.categories.unshift({
                 value: 'all',
-                label: 'all',
+                label: 'All',
             })
         })
         builder.addCase(fetchProductsByCategory.fulfilled,(state,action)=>{

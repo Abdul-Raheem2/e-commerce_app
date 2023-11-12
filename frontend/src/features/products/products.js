@@ -1,3 +1,4 @@
+import './products.css';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories, fetchProducts, fetchProductsByCategory } from "./productsSlice"
 import { useEffect, useState } from "react";
@@ -7,7 +8,7 @@ import DisplayProduct from "../../components/DisplayProduct";
 
 export default function Products(){
     const dispatch = useDispatch();
-    const [selectedCategory,setSelectedCategory] = useState({value: 'all',label: 'all'});
+    const [selectedCategory,setSelectedCategory] = useState({value: 'all',label: 'All'});
 
     useEffect(()=>{
         dispatch(fetchCategories());
@@ -31,7 +32,8 @@ export default function Products(){
     console.log(selectedCategory.value);
     return (
         <>
-            <Select value={selectedCategory} onChange={handleCategoryChange} options={categories}/>
+            <label for="select-category">Category</label>
+            <Select id="select-category"value={selectedCategory} onChange={handleCategoryChange} options={categories}/>
             <div id="products">
                 {products.map((product)=>{
                     return <DisplayProduct product={product} key={product.id}/>

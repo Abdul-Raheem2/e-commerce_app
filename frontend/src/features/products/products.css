@@ -1,0 +1,11 @@
+#products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+#select-category{
+    margin: 20px 10px;
+    display: inline-block;
+    width:200px;
+}

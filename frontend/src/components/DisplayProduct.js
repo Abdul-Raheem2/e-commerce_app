@@ -1,4 +1,4 @@
-
+import './displayProducts.css';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -19,10 +19,10 @@ export default function DisplayProduct({product}){
         }
     },[quantity])
     return (
-        <div id="product" onClick={handleClick}>
-            <div id="product-image" style={{"backgroundColor":product.image}}></div>
-            <h3 id="product-name">{product.name}</h3>
-            <p id="product-price">£{product.price}</p>
+        <div id="display-product" onClick={handleClick}>
+            <div class="product-image" style={{"backgroundColor":product.image}}></div>
+            <h3 class="product-name">{product.name}</h3>
+            <p class="product-price">£{product.price}</p>
         </div>
     )
 }
