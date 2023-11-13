@@ -24,7 +24,7 @@ export default function BasketOrderProduct({product}){
             <div className="product-image" style={{"backgroundColor":product.image}}></div>
             <h3 className="product-name">{product.name}</h3>
             <p className="product-price">£{product.price}</p>
-            <input type="number" value={quantity} onChange={(e)=>{setQuantity(e.target.value)}} min="0"></input>
+            <input type="number" value={quantity} onChange={(e)=>{setQuantity(e.target.value)}} min="1"></input>
             <button onClick={handleUpdateQuantity}>Update Quantity</button>
             <button onClick={(e)=>{setQuantity(product.quantity)}} ref={resetRef}>Reset</button>
             <button onClick={handleRemoveFromBasket}>Remove From Basket</button>
