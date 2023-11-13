@@ -16,3 +16,7 @@
 #product .product-info{
     text-align: center;
 }
+
+#product-msg{
+    color:green;
+}

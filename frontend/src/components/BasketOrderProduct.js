@@ -13,12 +13,12 @@ export default function BasketOrderProduct({product}){
         dispatch(removeFromBasket(product.id))
     }
     useEffect(()=>{
-        if(quantity!=product.quantity){
+        if(parseInt(quantity)!==parseInt(product.quantity)){
             resetRef.current.style.display = "inline-block";
         }else{
             resetRef.current.style.display = "none";
         }
-    },[quantity])
+    },[quantity,product.quantity])
     return (
         <div id="basket-order-product">
             <div className="product-image" style={{"backgroundColor":product.image}}></div>
