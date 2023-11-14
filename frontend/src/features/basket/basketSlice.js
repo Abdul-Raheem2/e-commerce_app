@@ -1,6 +1,6 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import { apiFetchBasket,apiAddProductToBasket, apiUpdateQuantity, apiRemoveFromBasket } from "../../api/basket";
-;
+import notify from '../../utils/toast';
 
 export const fetchBasket = createAsyncThunk(
     'basket/fetchBasket',
@@ -13,13 +13,13 @@ export const fetchBasket = createAsyncThunk(
 )
 export const addProductToBasket = createAsyncThunk(
     'basket/addProductToBasket',
-    async ({productId,quantity,newAlert}) => {
+    async ({productId,quantity}) => {
         const response = await apiAddProductToBasket(productId,quantity);
         if(response.ok){
-            newAlert('Added to basket','success');
+            notify.success('Added to basket');
             return await response.json();
         }else{
-            newAlert('Error adding product to basket','error');
+            //newAlert('Error adding product to basket','error');
             console.log(response);
         }
     }
@@ -28,13 +28,13 @@ export const addProductToBasket = createAsyncThunk(
 
 export const updateQuantity = createAsyncThunk(
     'basket/updateQuantity',
-    async ({productId,quantity,newAlert}) =>{
+    async ({productId,quantity}) =>{
         const response = await apiUpdateQuantity(productId,quantity);
         if(response.ok){
-            newAlert('Quantity Updated','success');
+            notify.success('Quantity Updated');
             return await response.json();
         }else{
-            newAlert('Error updating quantity','error');
+            //newAlert('Error updating quantity','error');
             console.log(response);
         }
     }
@@ -42,13 +42,13 @@ export const updateQuantity = createAsyncThunk(
 
 export const removeFromBasket = createAsyncThunk(
     'basket/removeFromBasket',
-    async ({productId,newAlert}) => {
+    async ({productId}) => {
         const response = await apiRemoveFromBasket(productId);
         if (response.ok){
-            newAlert('Product removed from basket','info');
+            notify.info('Product removed from basket');
             return productId;
         }else{
-            newAlert('Error removing product from basket','error');
+            //newAlert('Error removing product from basket','error');
             console.log(response);
         }
     }

@@ -9,6 +9,8 @@ import { checkLoggedIn } from "../account/accountSlice";
 
 import { FaShoppingBasket,FaUserCircle,FaShoppingBag } from "react-icons/fa";
 
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Root(){
     const navigate = useNavigate();
@@ -40,6 +42,7 @@ export default function Root(){
                 </nav>
             </header>
             <Outlet/>
+            <ToastContainer/>
         </>
     );
 }

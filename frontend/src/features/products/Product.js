@@ -1,15 +1,12 @@
 import './product.css';
 import { useEffect, useState,useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useAlert } from 'react-alert'
 import { Link,useParams } from "react-router-dom"
 import { fetchProduct } from "./productsSlice";
 import { addProductToBasket,updateQuantity,removeFromBasket } from '../basket/basketSlice';
-import newAlert from '../../utils/alert';
 
 
 export default function Products(){
-    const alert = useAlert();
     const dispatch = useDispatch();
     let {productId} = useParams();
     const [quantity,setQuantity] = useState(1);
@@ -23,14 +20,14 @@ export default function Products(){
     },[dispatch,productId]);
 
     function handleAddToBasket(e){
-        dispatch(addProductToBasket({productId,quantity,newAlert:newAlert(alert)}));
+        dispatch(addProductToBasket({productId,quantity}));
     }
     
     function handleUpdateQuantity(e){
-        dispatch(updateQuantity({productId,quantity,newAlert:newAlert(alert)}));
+        dispatch(updateQuantity({productId,quantity}));
     }
     function handleRemoveFromBasket(e){
-        dispatch(removeFromBasket({productId,newAlert:newAlert(alert)}));
+        dispatch(removeFromBasket({productId}));
     }
     const product = useSelector((state)=>state.products.product);
     const basket = useSelector((state)=>state.basket.basket.products);
