@@ -60,8 +60,8 @@ export default function Products(){
                     <p className="product-description">{product.description}</p>
                     <p className="product-price">£{product.price}</p>
                     <p ref={inBasketMsgRef} id="product-msg">✓ Added to basket</p>
-                    <label htmlFor='qty'>Quantity:</label>
-                    <input id="qty" type="number" min="1" value={quantity} onChange={(e)=>{setQuantity(e.target.value)}}/>
+                    <label htmlFor='qty1'>Qty:</label>
+                    <input id="qty1" type="number" min="1" value={quantity} onChange={(e)=>{setQuantity(e.target.value)}}/>
                     <button onClick={(e)=>{checkInBasket()}} title='reset'>↺</button>
                     <div id="product-notinbasket-div" ref={notInBasketRef}>
                         <button onClick={handleAddToBasket}>Add to basket</button>

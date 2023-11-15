@@ -20,3 +20,16 @@
 #product-msg{
     color:green;
 }
+
+#qty1{
+    margin: 0 5px;
+}
+#product-notinbasket-div{
+    margin-top: 10px;
+}
+#product-inbasket-div button{
+    margin: 0px 1px;
+}
+#product-inbasket-div{
+    margin-top: 10px;
+}

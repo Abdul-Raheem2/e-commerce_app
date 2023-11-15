@@ -1,7 +1,8 @@
+import './basket.css';
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBasket } from "./basketSlice";
-import BasketOrderProduct from "../../components/BasketOrderProduct";
+import BasketProduct from '../../components/BasketProduct';
 
 export default function Basket(){
     const dispatch = useDispatch();
@@ -15,15 +16,18 @@ export default function Basket(){
         dispatch(fetchBasket());
     }
     return (
-        <>
-            <p>Total:£{basket.total}</p>
-            <button onClick={handleUpdateTotal}>Update Total</button>
-            <div>
+        <div id="basket">
+            <div id="basket-info">
+                <p>Total:£{basket.total}</p>
+                <button onClick={handleUpdateTotal}>Update Total</button>
+            </div>
+
+            <div id="basket-products">
                 {basket.products.map((product)=>{
-                    return <BasketOrderProduct product={product} key={product.id}/>
+                    return <BasketProduct product={product} key={product.id}/>
                 })}
             </div>
-        </>
+        </div>
 
     )
 }
