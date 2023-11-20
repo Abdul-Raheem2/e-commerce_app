@@ -8,3 +8,8 @@
     float:right;
     margin-right: 100px;
 }
+
+#basket-info button{
+    display: block;
+    margin: 10px auto;
+}

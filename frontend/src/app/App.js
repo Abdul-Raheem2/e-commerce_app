@@ -8,6 +8,7 @@ import Orders from '../features/orders/orders';
 import Basket from '../features/basket/basket';
 import Account from '../features/account';
 import Product from '../features/products/Product';
+import Checkout from '../features/checkout';
 
 const appRouter = createBrowserRouter(createRoutesFromElements(
   <Route path="/" element={<Root/>}>
@@ -16,6 +17,7 @@ const appRouter = createBrowserRouter(createRoutesFromElements(
     <Route path="register" element={<Register/>}/>
     <Route path="logIn" element={<LogIn/>}/>
     <Route path="basket" element={<Basket/>}/>
+    <Route path="checkout" element={<Checkout/>}/>
     <Route path="orders" element={<Orders/>}/>
     <Route path="account" element={<Account/>}/>
   </Route>

@@ -1,12 +1,12 @@
 import './basket.css';
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from 'react-router-dom';
 import { fetchBasket } from "./basketSlice";
 import BasketProduct from '../../components/BasketProduct';
 
 export default function Basket(){
     const dispatch = useDispatch();
-
     const basket = useSelector((state)=>state.basket.basket);
     useEffect(()=>{
         dispatch(fetchBasket());  
@@ -20,6 +20,7 @@ export default function Basket(){
             <div id="basket-info">
                 <p>Total:£{basket.total}</p>
                 <button onClick={handleUpdateTotal}>Update Total</button>
+                <Link to='/checkout'><button>Checkout</button></Link>
             </div>
 
             <div id="basket-products">
