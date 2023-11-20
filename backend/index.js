@@ -51,6 +51,9 @@ app.use('/products',productRouter);
 const basketRouter = require('./routes/basket');
 app.use('/basket',basketRouter);
 
+const checkoutRouter = require('./routes/checkout');
+app.use('/checkout',checkoutRouter);
+
 const orderRouter = require('./routes/orders');
 app.use('/orders',orderRouter);
 

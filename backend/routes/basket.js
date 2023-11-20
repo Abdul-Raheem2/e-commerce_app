@@ -85,19 +85,4 @@ basketRouter.delete('/:productId',async (req,res,next)=>{
     }
 })
 
-basketRouter.post('/checkout', async (req,res,next)=>{
-    const {paymentInfo} = req.body;
-
-    const basket = await db.basketById(req.session.basketId);
-    const info = basketInfo(basket);
-    const order = await db.newOrder(req.user.id,info.numProducts,info.total);
-    //process payment
-    const values = basket.map((product)=>{
-        return([`${order.id}`,`${product.product_id}`,`${product.quantity}`]);
-    });
-    await db.addProductsToOrder(values);
-    await db.deleteBasket(req.session.basketId);
-    res.send();
-})
-
 module.exports = basketRouter;
