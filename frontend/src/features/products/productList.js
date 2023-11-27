@@ -1,4 +1,4 @@
-import './products.css';
+import './productList.css';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories, fetchProducts, fetchProductsByCategory } from "./productsSlice"
 import { useEffect, useState } from "react";
@@ -7,7 +7,7 @@ import Select from 'react-select'
 import DisplayProduct from "../../components/DisplayProduct";
 import { fetchBasket } from '../basket/basketSlice';
 
-export default function Products(){
+export default function ProductList(){
     const dispatch = useDispatch();
     const [selectedCategory,setSelectedCategory] = useState({value: 'all',label: 'All'});
 

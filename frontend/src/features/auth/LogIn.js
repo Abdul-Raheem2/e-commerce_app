@@ -1,4 +1,5 @@
 
+import './auth.css';
 import { useState } from "react";
 import { useNavigate} from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -27,7 +28,7 @@ export default function LogIn(){
     return(
         <div>
             <h2>Log In</h2>
-            <form onSubmit={handleSubmit}>
+            <form class="auth" onSubmit={handleSubmit}>
                 <div id="login-email-div">
                     <label htmlFor="login-email-input">Email</label>
                     <input type="email" id="login-email-input" name="email" placeholder="Enter email" required value={email} onChange={(e)=>{setEmail(e.target.value)}}/>

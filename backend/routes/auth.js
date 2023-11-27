@@ -37,24 +37,29 @@ authRouter.post("/login",(req,res,next)=>{
     }else{
         next();
     }
-},passport.authenticate('local'),async (req,res)=>{
+},passport.authenticate('local'),async (req,res,next)=>{
     if(req.isAuthenticated()){
-        const basket = await db.checkUserBasket(req.user.id);
-        if(basket){
-            if(res.locals.basketId){
-                await db.combineBaskets(basket.id,res.locals.basketId);
-            }
-            req.session.basketId = basket.id;
-        }else{
-            if(res.locals.basketId){
-                db.setUserBasket(req.user.id,res.locals.basketId);
-                req.session.basketId = res.locals.basketId;
+        try{
+            const basket = await db.checkUserBasket(req.user.id);
+            if(basket){
+                if(res.locals.basketId){
+                    await db.combineBaskets(basket.id,res.locals.basketId);
+                }
+                req.session.basketId = basket.id;
             }else{
-                const newBasket = await db.newBasket(req.user.id);
-                req.session.basketId = newBasket.id;
+                if(res.locals.basketId){
+                    db.setUserBasket(req.user.id,res.locals.basketId);
+                    req.session.basketId = res.locals.basketId;
+                }else{
+                    const newBasket = await db.newBasket(req.user.id);
+                    req.session.basketId = newBasket.id;
+                }
             }
+            res.status(200).send();
+        }catch(err){
+            next(err);
         }
-        res.status(200).send();
+
     }else{
         res.status(401).send();
     }

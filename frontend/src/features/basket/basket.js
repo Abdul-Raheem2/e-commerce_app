@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
 import { fetchBasket } from "./basketSlice";
 import BasketProduct from '../../components/BasketProduct';
+import moneyFormatter from '../../utils/money';
 
 export default function Basket(){
     const dispatch = useDispatch();
@@ -18,7 +19,7 @@ export default function Basket(){
     return (
         <div id="basket">
             <div id="basket-info">
-                <p>Total:£{basket.total}</p>
+                <p>Total:{moneyFormatter(basket.total)}</p>
                 <button onClick={handleUpdateTotal}>Update Total</button>
                 <Link to='/checkout'><button>Checkout</button></Link>
             </div>

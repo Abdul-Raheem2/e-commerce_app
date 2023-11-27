@@ -22,7 +22,7 @@ function basketInfo(basket){
     })
     return {
         numProducts:numProducts,
-        total:total.toFixed(2),
+        total:total,
     }
 }
 

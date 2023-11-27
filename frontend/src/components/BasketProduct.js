@@ -2,6 +2,7 @@ import './basketProduct.css';
 import {useState } from "react"
 import { useDispatch } from "react-redux";
 import { removeFromBasket, updateQuantity } from "../features/basket/basketSlice";
+import moneyFormatter from '../utils/money';
 
 export default function BasketProduct({product}){
     const dispatch = useDispatch();
@@ -18,7 +19,7 @@ export default function BasketProduct({product}){
             <div className="product-image" style={{"backgroundColor":product.image}}></div>
             <div className='product-info'>
                 <h3 className="product-name">{product.name}</h3>
-                <p className="product-price">£{product.price}</p>
+                <p className="product-price">{moneyFormatter(product.price)}</p>
             </div>
             <div className='product-options'>
                 <div className='quantity-selector'>

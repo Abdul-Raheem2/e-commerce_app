@@ -23,6 +23,9 @@ app.use(cors({
   credentials:true}));
 app.use(logger('dev'));
 
+const stripeRouter = require('./routes/stripe');
+app.use('/webhook',stripeRouter);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -62,6 +65,8 @@ app.use('/account',accountRouter);
 
 const authRouter = require('./routes/auth');
 app.use('/',authRouter);
+
+
 
 app.get('/', (req,res)=>{
     if(req.session.viewCount){

@@ -19,7 +19,7 @@ export default function Root(){
     const account = useSelector((state)=>state.account);
     useEffect(()=>{
         dispatch(checkLoggedIn());
-        navigate('/products');
+        //navigate('/products');
     },[dispatch,navigate]);
     return(
         <>

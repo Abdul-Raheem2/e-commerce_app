@@ -1,3 +1,4 @@
+import './auth.css';
 
 import { useEffect, useRef, useState } from "react";
 import { useNavigate} from "react-router-dom";
@@ -46,7 +47,7 @@ export default function Register(){
     return(
         <div>
             <h2>Register</h2>
-            <form onSubmit={handleSubmit}>
+            <form class = "auth" onSubmit={handleSubmit}>
                 <div id="register-email-div">
                     <label htmlFor="register-email-input">Email</label>
                     <input type="email" id="register-email-input" name="email" placeholder="Enter Email" required value={email} onChange={(e)=>{setEmail(e.target.value)}}/>
