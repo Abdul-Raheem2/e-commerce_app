@@ -4,11 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link,useParams } from "react-router-dom"
 import { fetchProduct } from "./productsSlice";
 import { addProductToBasket,updateQuantity,removeFromBasket } from '../basket/basketSlice';
-
+import moneyFormatter from '../../utils/money';
 
 export default function Products(){
     const dispatch = useDispatch();
     let {productId} = useParams();
+
+
     const [quantity,setQuantity] = useState(1);
 
     const inBasketMsgRef = useRef(null);
@@ -37,7 +39,7 @@ export default function Products(){
     },[product,basket])
 
     function checkInBasket(){
-        const basketIndex = basket.findIndex((basketProduct)=>basketProduct.id===product.id);
+        const basketIndex = basket.findIndex((basketProduct)=>basketProduct.id===product.id)
         if(basketIndex!==-1){
             inBasketMsgRef.current.style.display = "block";
             inBasketRef.current.style.display = "block";
@@ -58,7 +60,7 @@ export default function Products(){
                 <div className="product-info">
                     <h3 className="product-name">{product.name}</h3>
                     <p className="product-description">{product.description}</p>
-                    <p className="product-price">£{product.price}</p>
+                    <p className="product-price">{moneyFormatter(product.price)}</p>
                     <p ref={inBasketMsgRef} id="product-msg">✓ Added to basket</p>
                     <label htmlFor='qty1'>Qty:</label>
                     <input id="qty1" type="number" min="1" value={quantity} onChange={(e)=>{setQuantity(e.target.value)}}/>

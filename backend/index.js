@@ -10,6 +10,7 @@ const passport = require('passport');
 const helmet = require('helmet');
 const cors = require('cors');
 const logger = require('morgan');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 const port = process.env.PORT;
@@ -19,29 +20,42 @@ const port = process.env.PORT;
 app.use(helmet());
 
 app.use(cors({
-  origin:'http://localhost:3001',
+  origin: process.env.FRONT_END_BASE_URL,
   credentials:true}));
 app.use(logger('dev'));
 
 const stripeRouter = require('./routes/stripe');
 app.use('/webhook',stripeRouter);
 
+app.use(cookieParser());
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(
-  session({
+if(process.env.NODE_ENV==='production'){
+  app.use(session({
     secret: process.env.SESSION_SECRET,
     cookie: { 
       maxAge: 1000*60*60*24,
-      //secure:false,
-      //httpOnly:true,
-      //sameSite:'none'
+      secure: true,
+      httpOnly:true,
+      sameSite:'none'
+    },
+    resave: false,
+    saveUninitialized: false
+  }));
+}else{
+  app.use(session({
+    secret: process.env.SESSION_SECRET,
+    cookie: { 
+      maxAge: 1000*60*60*24,
+      secure: false,
     },
     resave: false,
     saveUninitialized: true
-  })
-);
+  }));
+}
+
 
 app.use(passport.initialize());
 app.use(passport.session());

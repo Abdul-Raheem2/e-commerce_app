@@ -1,4 +1,4 @@
-import './auth.css';
+import styles from './auth.module.css';
 
 import { useEffect, useRef, useState } from "react";
 import { useNavigate} from "react-router-dom";
@@ -31,7 +31,13 @@ export default function Register(){
                 alert('error auto login');
             }
         }else if(registerResponse.status === 409){
-            alert("email is already registered");
+            const data = await registerResponse.json();
+            if(data.google){
+                alert("email is already registered using Google login. Please Log in using Google and add a password from the account page to log in locally");
+            }else{
+                alert("email is already registered. Please Log in");
+            }
+            navigate('/login');
         }else{
             alert("enter username/password");
         }

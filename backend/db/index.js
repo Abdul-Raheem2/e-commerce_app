@@ -9,20 +9,18 @@ const pool = new Pool({
     port: process.env.PGPORT,
 });
  
-//const query = (text, params, callback) => pool.query(text, params,callback);
-
 //users
 
 const userExists = async (email) => {
-    return (await pool.query('SELECT id FROM users WHERE LOWER(email) = LOWER($1) LIMIT 1',[email])).rowCount;
+    return (await pool.query('SELECT id,auth_method FROM users WHERE LOWER(email) = LOWER($1) LIMIT 1',[email])).rows[0];
 }
 
-const addUser = async (email,hashPassword,firstName,lastName) => {
-    await pool.query('INSERT INTO users (email,password,first_name,last_name) VALUES ($1,$2,$3,$4)',[email,hashPassword,firstName,lastName]);
+const addUser = async (email,hashPassword,firstName,lastName,authMethod) => {
+    return (await pool.query('INSERT INTO users (email,password,first_name,last_name,auth_method) VALUES ($1,$2,$3,$4,$5) RETURNING id',[email,hashPassword,firstName,lastName,authMethod])).rows[0];
 }
 
 const findUserByEmail = async (email) => {
-    return (await pool.query('SELECT id,email,password FROM users WHERE LOWER(email) = LOWER($1) LIMIT 1', [email])).rows[0];
+    return (await pool.query('SELECT id,email,password,auth_method FROM users WHERE LOWER(email) = LOWER($1) LIMIT 1', [email])).rows[0];
 }
 
 const findUserById = async (id) => {

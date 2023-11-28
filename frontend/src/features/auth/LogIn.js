@@ -1,11 +1,15 @@
-
-import './auth.css';
+import styles from './auth.module.css';
 import { useState } from "react";
 import { useNavigate} from "react-router-dom";
 import { useDispatch } from "react-redux";
+
+import GoogleButton from 'react-google-button';
+
 import { apiLogIn } from "../../api/auth";
 import { checkLoggedIn} from "../account/accountSlice";
 import { fetchBasket } from "../basket/basketSlice";
+
+
 
 export default function LogIn(){
     const navigate = useNavigate();
@@ -20,7 +24,7 @@ export default function LogIn(){
         if(response.ok){
             dispatch(checkLoggedIn());
             dispatch(fetchBasket());
-            navigate('/products');
+            navigate(-1);
         }else{
             alert('Incorrect username or password');
         }
@@ -28,7 +32,7 @@ export default function LogIn(){
     return(
         <div>
             <h2>Log In</h2>
-            <form class="auth" onSubmit={handleSubmit}>
+            <form className={styles.auth} onSubmit={handleSubmit}>
                 <div id="login-email-div">
                     <label htmlFor="login-email-input">Email</label>
                     <input type="email" id="login-email-input" name="email" placeholder="Enter email" required value={email} onChange={(e)=>{setEmail(e.target.value)}}/>
@@ -39,6 +43,12 @@ export default function LogIn(){
                 </div>
 
                 <input type="submit" value="Log In"/>
+                <GoogleButton 
+                    onClick={(e) => {
+                        e.preventDefault()
+                        window.location.href = `http://localhost:3000/login/google`
+                    }}
+                />
             </form>
         </div>
     )

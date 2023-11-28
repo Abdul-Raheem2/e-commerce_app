@@ -5,15 +5,27 @@ import {
 } from '@stripe/react-stripe-js';
 import { apiCreateCheckoutSession } from '../../api/checkout';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const stripePromise = loadStripe('pk_test_51O3htwA0mQPZIaArFvbsgi3eaZyFMRcNOyP3rbDFvMpBTkOyK9aAu2HdP3dEmJSvBL12fNCZOqPAJ1GFtS95MajN001QQsylCy');
 
 export default function Checkout(){
+    const navigate = useNavigate();
     const [clientSecret, setClientSecret] = useState('');
     
     useEffect(() => {
-        apiCreateCheckoutSession()
-            .then((data) => setClientSecret(data.clientSecret));
+        async function getCheckoutSession(){
+            const response = await apiCreateCheckoutSession()
+            if(response.ok){
+                const data = await response.json()
+                setClientSecret(data.clientSecret);
+            }else{
+                if(response.status===401){
+                    navigate('/login');
+                }
+            }
+        }
+        getCheckoutSession();
     }, []);
     
     const options = {clientSecret};
