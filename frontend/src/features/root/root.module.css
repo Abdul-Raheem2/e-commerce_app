@@ -2,16 +2,18 @@
     box-sizing: border-box;
 }
 
-header{
-    border-bottom: thin solid black;
+.header{
+    border-bottom: thin solid rgb(80, 80, 85);
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
 
-h1{
+.heading{
+    font-family: 'Helvetica';
     font-size: 40px;
     display: block;
     text-align: center;
+    color: rgb(63, 63, 63);
 }
 
 nav{
@@ -19,12 +21,12 @@ nav{
     justify-content: space-around;
 }
 
-.icon-div span{
+.iconWithLabel span{
     display: block;
     text-align: center;
 }
 
-.icon-div .icon{
+.iconWithLabel .icon{
     display: block;
 }
 
@@ -32,27 +34,27 @@ nav{
     width:50px;
     height:50px;
     margin-top:25px;
-    color: rgb(93, 93, 93);
+    color:rgb(80, 80, 85);
 }
 
 /*dropdown */
 
-.dropdown-content {
-    background-color: gray;
+.dropdownContent {
+    background-color: rgb(80, 80, 85);
     display: none;
     position: absolute;
     min-width: 160px;
     z-index: 1;
 }
 
-.dropdown-link {
+.dropdownLink {
     text-align: center;
-    color: black;
+    color: white;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
 }
 
-.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropdownContent {display: block;}
 
 

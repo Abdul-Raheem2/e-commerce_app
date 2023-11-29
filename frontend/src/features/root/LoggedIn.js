@@ -1,3 +1,4 @@
+import styles from './root.module.css';
 import { Link } from "react-router-dom";
 import { apiLogOut } from "../../api/auth";
 import { useNavigate} from "react-router-dom";
@@ -21,10 +22,10 @@ export default function LoggedIn(){
         }
     }
     return(
-        <div className="dropdown-content">
-            <Link className="dropdown-link" to='/account'>account</Link>
-            <Link className="dropdown-link" to='/orders'>orders</Link>
-            <Link className="dropdown-link" onClick={handleLogOut}>Log Out</Link>
+        <div className={styles.dropdownContent}>
+            <Link className={styles.dropdownLink} to='/account'>account</Link>
+            <Link className={styles.dropdownLink} to='/orders'>orders</Link>
+            <Link className={styles.dropdownLink} onClick={handleLogOut}>Log Out</Link>
         </div>
     )
 }

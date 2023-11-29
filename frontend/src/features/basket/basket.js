@@ -1,12 +1,13 @@
 import './basket.css';
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { fetchBasket } from "./basketSlice";
 import BasketProduct from '../../components/BasketProduct';
 import moneyFormatter from '../../utils/money';
 
 export default function Basket(){
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const basket = useSelector((state)=>state.basket.basket);
     useEffect(()=>{
@@ -21,7 +22,7 @@ export default function Basket(){
             <div id="basket-info">
                 <p>Total:{moneyFormatter(basket.total)}</p>
                 <button onClick={handleUpdateTotal}>Update Total</button>
-                <Link to='/checkout'><button>Checkout</button></Link>
+                <button onClick={()=>{navigate('/checkout')}}>Checkout</button>
             </div>
 
             <div id="basket-products">

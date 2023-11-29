@@ -2,6 +2,7 @@ import './app.css'
 import {RouterProvider,Route,createBrowserRouter,createRoutesFromElements} from 'react-router-dom';
 
 import Root from '../features/root/root';
+import Home from '../features/home';
 import ProductList from '../features/products/productList';
 import Register from '../features/auth/Register';
 import LogIn from '../features/auth/LogIn';
@@ -14,6 +15,7 @@ import PaymentReturn from '../features/checkout/PaymentReturn';
 
 const appRouter = createBrowserRouter(createRoutesFromElements(
   <Route path="/" element={<Root/>}>
+    <Route index element={<Home/>}/>
     <Route path="products" element={<ProductList/>}/>
     <Route path="products/:productId" element={<Product/>}/>
     <Route path="register" element={<Register/>}/>

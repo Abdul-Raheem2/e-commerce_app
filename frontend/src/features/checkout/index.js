@@ -20,8 +20,16 @@ export default function Checkout(){
                 const data = await response.json()
                 setClientSecret(data.clientSecret);
             }else{
-                if(response.status===401){
-                    navigate('/login');
+                switch(response.status){
+                    case (401):
+                        navigate('/login');
+                        break;
+                    case (400):
+                        navigate('/basket');
+                        alert('no products in basket');
+                        break;
+                    default:
+                        navigate('/');
                 }
             }
         }

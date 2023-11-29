@@ -26,19 +26,24 @@ checkoutRouter.post('/create-checkout-session',async (req,res,next)=>{
                 quantity: product.quantity,
             }
         });
-        const session = await stripe.checkout.sessions.create({
-            line_items: baksetProductsData,
-            mode: 'payment',
-            ui_mode: 'embedded',
-            return_url: `checkout/payment-return?session_id={CHECKOUT_SESSION_ID}`,
-            customer_email: req.user.email,
-            metadata:{
-                userId:req.user.id,
-                basketId:req.session.basketId,
-                numProducts,
-            }
-        });
-        res.send({clientSecret: session.client_secret});
+        if(numProducts){
+            const session = await stripe.checkout.sessions.create({
+                line_items: baksetProductsData,
+                mode: 'payment',
+                ui_mode: 'embedded',
+                return_url: `checkout/payment-return?session_id={CHECKOUT_SESSION_ID}`,
+                customer_email: req.user.email,
+                metadata:{
+                    userId:req.user.id,
+                    basketId:req.session.basketId,
+                    numProducts,
+                }
+            });
+            res.send({clientSecret: session.client_secret});
+        }else{ //basket empty
+            res.status(400).send();
+        }
+
     }catch(err){
         next(err);
     }

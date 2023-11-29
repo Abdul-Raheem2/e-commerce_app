@@ -1,4 +1,4 @@
-import './root.css';
+import styles from './root.module.css';
 import { useEffect} from "react";
 import { useDispatch } from "react-redux";
 import { Link,Outlet ,useNavigate} from "react-router-dom";
@@ -23,20 +23,20 @@ export default function Root(){
     },[dispatch,navigate]);
     return(
         <>
-            <header>
-                <h1 onClick={(e)=>{navigate('/products')}}>Colour Shop</h1>
-                <nav>
-                    <div className="icon-div">
-                        <Link to='/products'><FaShoppingBag className="icon"/></Link>
+            <header className={styles.header}>
+                <h1 className={styles.heading} onClick={(e)=>{navigate('/')}}>The Colour Shop</h1>
+                <nav className={styles.nav}>
+                    <div className={styles.iconWithLabel}>
+                        <Link to='/products'><FaShoppingBag className={styles.icon}/></Link>
                         <span>Products</span>
                     </div>
-                    <div className="icon-div">
-                        <Link to='/basket'><FaShoppingBasket className="icon"/></Link>
+                    <div className={styles.iconWithLabel}>
+                        <Link to='/basket'><FaShoppingBasket className={styles.icon}/></Link>
                         <span>Basket</span>
                     </div>
 
-                    <div className="dropdown">
-                        <FaUserCircle className="icon dropbtn"/>
+                    <div className={styles.dropdown}>
+                        <FaUserCircle className={styles.icon}/>
                         {account.loggedIn ? <LoggedIn/>:<NotLoggedIn/>}
                     </div>
                 </nav>
