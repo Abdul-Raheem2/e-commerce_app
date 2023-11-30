@@ -1,11 +1,12 @@
 import styles from './auth.module.css';
 
 import { useEffect, useRef, useState } from "react";
-import { useNavigate} from "react-router-dom";
+import { useNavigate,Link} from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { apiRegister,apiLogIn } from "../../api/auth";
 import { checkLoggedIn } from "../account/accountSlice";
 import { fetchBasket } from "../basket/basketSlice";
+import GoogleButton from 'react-google-button';
 
 export default function Register(){
     const navigate = useNavigate();
@@ -51,32 +52,31 @@ export default function Register(){
           }
     },[password,confirmPassword]);
     return(
-        <div>
+        <div className={styles.authDiv}>
             <h2>Register</h2>
-            <form className={styles.auth} onSubmit={handleSubmit}>
-                <div id="register-email-div">
-                    <label htmlFor="register-email-input">Email</label>
-                    <input type="email" id="register-email-input" name="email" placeholder="Enter Email" required value={email} onChange={(e)=>{setEmail(e.target.value)}}/>
-                </div>
-                <div id="register-password-div">
-                    <label htmlFor="register-password-input">Password</label>
-                    <input type="password" id="register-password-input" name="password" placeholder="Enter Password" required value={password} minLength="8" onChange={(e)=>{setPassword(e.target.value)}}/>
-                </div>
-                <div id="register-confirmpassword-div">
-                    <label htmlFor="register-confirmpassword-input">Confirm Password</label>
-                    <input type="password" id="register-confirmpassword-input" ref={confirmPasswordRef} placeholder="Re-enter Password" required value={confirmPassword} onChange={(e)=>{setConfirmPassword(e.target.value)}}/>
-                </div>
-                <div id="register-firstname-div">
-                    <label htmlFor="register-firstname-input">First Name</label>
-                    <input type="text" id="register-firstname-input" name="firstName" placeholder="Enter First Name" required value={firstName} onChange={(e)=>{setFirstName(e.target.value)}}/>
-                </div>
-                <div id="register-lastname-div">
-                    <label htmlFor="register-lastname-input">Last Name</label>
-                    <input type="text" id="register-lastname-input" name="lastName" placeholder="Enter Last Name" required value={lastName} onChange={(e)=>{setLastName(e.target.value)}}/>
-                </div>
-                <input type="submit" value="Register"/>
+            <form className={styles.authForm} onSubmit={handleSubmit}>
+                <input className={styles.dataInput} type="email" name="email" placeholder="Enter Email" required value={email} onChange={(e)=>{setEmail(e.target.value)}}/>
+                <input className={styles.dataInput} type="password" name="password" placeholder="Enter Password" required value={password} minLength="8" onChange={(e)=>{setPassword(e.target.value)}}/>
+                <input className={styles.dataInput} type="password" ref={confirmPasswordRef} placeholder="Confirm Password" required value={confirmPassword} onChange={(e)=>{setConfirmPassword(e.target.value)}}/>
+                <div className={styles.smallDataDiv}>
+                    <input className={styles.smallDataInput} type="text" name="firstName" placeholder="Enter First Name" value={firstName} onChange={(e)=>{setFirstName(e.target.value)}}/>
+                    <input className={styles.smallDataInput} type="text" name="lastName" placeholder="Enter Last Name" value={lastName} onChange={(e)=>{setLastName(e.target.value)}}/>
+                </div>  
+                <input className={styles.submitBtn} type="submit" value="Register"/>
             </form>
+            <p className={styles.authLink}>Already have an account? <Link to='/Login'>Login</Link></p>
+            <div className={styles.oauthLoginDiv}>
+                <p>or</p>
+                <GoogleButton
+                    className={styles.googleLoginBtn}
+                    onClick={(e) => {
+                        e.preventDefault()
+                        window.location.href = `http://localhost:3000/login/google`
+                    }}
+                />
+            </div>
         </div>
+
 
     )
 }

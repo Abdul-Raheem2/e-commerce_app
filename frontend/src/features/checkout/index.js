@@ -34,7 +34,7 @@ export default function Checkout(){
             }
         }
         getCheckoutSession();
-    }, []);
+    }, [navigate]);
     
     const options = {clientSecret};
     

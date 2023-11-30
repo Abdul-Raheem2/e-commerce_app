@@ -3,6 +3,7 @@
     box-sizing: border-box;
 }
 
-h2{
+h1,h2{
     text-align: center;
+    color: rgb(40, 40, 40);
 }

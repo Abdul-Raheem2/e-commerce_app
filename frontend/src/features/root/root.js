@@ -19,8 +19,16 @@ export default function Root(){
     const account = useSelector((state)=>state.account);
     useEffect(()=>{
         dispatch(checkLoggedIn());
-        //navigate('/products');
-    },[dispatch,navigate]);
+    },[dispatch]);
+
+    function handleAccountClick(e){
+        e.preventDefault();
+        if(account.loggedIn){
+            navigate('/account');
+        }else{
+            navigate('/login'); 
+        }
+    }
     return(
         <>
             <header className={styles.header}>
@@ -36,7 +44,7 @@ export default function Root(){
                     </div>
 
                     <div className={styles.dropdown}>
-                        <FaUserCircle className={styles.icon}/>
+                        <FaUserCircle className={styles.icon} onClick={handleAccountClick}/>
                         {account.loggedIn ? <LoggedIn/>:<NotLoggedIn/>}
                     </div>
                 </nav>

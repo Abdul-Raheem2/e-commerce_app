@@ -11,25 +11,37 @@
 .authForm input{
     display: block;
     height: 30px;
-    margin: 10px auto;
 }
 
 .dataInput{
     width: 70%;
+    margin: 10px auto;
+}
+
+.smallDataDiv{
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+    margin: 10px auto;
+}
+
+.smallDataInput{
+    width: 49%;
 }
 
 .submitBtn {
-    background-color: rgb(80, 80, 85);;
+    background-color: rgb(80, 80, 85);
     color:white;
     border-radius: 25px;
     width:50%;
     font-size: 16px;
+    margin: 25px auto;
 }
 .submitBtn:hover{
     background-color: rgb(80, 80, 85,0.9);
 }
 
-.registerLink {
+.authLink {
     margin: 5px 50px;
 }
 

@@ -25,6 +25,7 @@ const appRouter = createBrowserRouter(createRoutesFromElements(
     <Route path="checkout/payment-return" element={<PaymentReturn/>}/>
     <Route path="orders" element={<Orders/>}/>
     <Route path="account" element={<Account/>}/>
+    <Route path='*' element={<Home/>}/>
   </Route>
 ));
 
