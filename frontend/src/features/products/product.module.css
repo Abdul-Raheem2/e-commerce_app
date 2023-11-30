@@ -1,5 +1,5 @@
 
-#product{
+.product{
     width: 60%;
     height:400px;
     margin: 10px auto;
@@ -7,29 +7,30 @@
     grid-template-columns: 1fr 1fr;
 }
 
-#product .product-image{
+.productImg{
     border: medium solid black;
     width:100%;
     justify-self: center;
 }
 
-#product .product-info{
+.productInfoDiv{
     text-align: center;
 }
 
-#product-msg{
+.productMsg{
     color:green;
 }
 
-#qty1{
+.productQty{
     margin: 0 5px;
 }
-#product-notinbasket-div{
+
+.productNotInBasketDiv{
     margin-top: 10px;
 }
-#product-inbasket-div button{
+.productInBasketDiv{
+    margin-top: 10px;
+}
+.productInBasketDiv button{
     margin: 0px 1px;
-}
-#product-inbasket-div{
-    margin-top: 10px;
 }

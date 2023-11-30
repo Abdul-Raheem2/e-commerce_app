@@ -1,4 +1,4 @@
-import './product.css';
+import styles from './product.module.css';
 import { useEffect, useState,useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link,useParams } from "react-router-dom"
@@ -54,21 +54,21 @@ export default function Products(){
     }
     return (
         <>
-            <Link to='/products'>&lt; Back to all Products</Link>
-            <div id="product">
-                <div className="product-image" style={{"backgroundColor":product.image}}></div>
-                <div className="product-info">
+            <Link to={-1}>&lt; Back</Link>
+            <div className={styles.product}>
+                <div className={styles.productImg} style={{"backgroundColor":product.image}}></div>
+                <div className={styles.productInfoDiv}>
                     <h3 className="product-name">{product.name}</h3>
                     <p className="product-description">{product.description}</p>
                     <p className="product-price">{moneyFormatter(product.price)}</p>
-                    <p ref={inBasketMsgRef} id="product-msg">✓ Added to basket</p>
+                    <p ref={inBasketMsgRef} className={styles.productMsg}>✓ Added to basket</p>
                     <label htmlFor='qty1'>Qty:</label>
-                    <input id="qty1" type="number" min="1" value={quantity} onChange={(e)=>{setQuantity(e.target.value)}}/>
+                    <input className={styles.productQty} id="qty1" type="number" min="1" value={quantity} onChange={(e)=>{setQuantity(e.target.value)}}/>
                     <button onClick={(e)=>{checkInBasket()}} title='reset'>↺</button>
-                    <div id="product-notinbasket-div" ref={notInBasketRef}>
+                    <div className={styles.productNotInBasketDiv} ref={notInBasketRef}>
                         <button onClick={handleAddToBasket}>Add to basket</button>
                     </div>
-                    <div id="product-inbasket-div" ref={inBasketRef}>
+                    <div className={styles.productInBasketDiv} ref={inBasketRef}>
                         <button onClick={handleUpdateQuantity}>Update Quantity</button>
                         <button onClick={handleRemoveFromBasket}>Remove from basket</button>
                     </div>

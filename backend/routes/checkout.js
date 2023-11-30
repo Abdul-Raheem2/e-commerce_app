@@ -1,7 +1,9 @@
 const express = require('express');
 const db = require('../db');
 const checkAuthenticated = require('../utils/authenticated');
-const {basketInfo} = require('../utils/basket');
+
+const {checkBasket} = require('../utils/basket');
+
 
 const stripe = require('stripe')(process.env.STRIPESECRET);
 
@@ -9,7 +11,7 @@ const checkoutRouter = express.Router({mergeParams:true});
 
 checkoutRouter.use(checkAuthenticated);
 
-checkoutRouter.post('/create-checkout-session',async (req,res,next)=>{
+checkoutRouter.post('/create-checkout-session',checkBasket,async (req,res,next)=>{
     try{
         const basket = await db.basketById(req.session.basketId);
         let numProducts = 0;

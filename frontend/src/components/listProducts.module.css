@@ -1,26 +1,23 @@
-
-
-
-#display-product{
+.product{
     width:250px;
     height:300px;
     margin:10px 10px;
     border: thin solid black;
 }
 
-#display-product .product-image{
+.productImg{
     margin:10px auto;
     width: 200px;
     height: 200px;
     border: thin dotted black;
 }
 
-#display-product .product-name{
+.productName{
     text-align: center;
     margin: 10px 0px;
 }
 
-#display-product .product-price{
+.productPrice{
     font-size: 18px;
     margin: 0px 25px;
 }

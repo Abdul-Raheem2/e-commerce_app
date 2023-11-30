@@ -1,10 +1,10 @@
-import './productList.css';
+import styles from './productList.module.css';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories, fetchProducts, fetchProductsByCategory } from "./productsSlice"
 import { useEffect, useState } from "react";
 import Select from 'react-select'
 
-import DisplayProduct from "../../components/DisplayProduct";
+import ListProduct from "../../components/ListProduct";
 import { fetchBasket } from '../basket/basketSlice';
 
 export default function ProductList(){
@@ -34,10 +34,10 @@ export default function ProductList(){
     return (
         <>
             <label htmlFor="select-category">Category</label>
-            <Select id="select-category"value={selectedCategory} onChange={handleCategoryChange} options={categories}/>
-            <div id="products">
+            <Select className={styles.selectCategory} id="select-category" value={selectedCategory} onChange={handleCategoryChange} options={categories}/>
+            <div className={styles.productsDiv}>
                 {products.map((product)=>{
-                    return <DisplayProduct product={product} key={product.id}/>
+                    return <ListProduct product={product} key={product.id}/>
                 })}
             </div>
         </>

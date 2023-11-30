@@ -1,4 +1,4 @@
-import './basket.css';
+import styles from './basket.module.css';
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
@@ -18,14 +18,14 @@ export default function Basket(){
         dispatch(fetchBasket());
     }
     return (
-        <div id="basket">
-            <div id="basket-info">
+        <div>
+            <div className={styles.basketInfo}>
                 <p>Total:{moneyFormatter(basket.total)}</p>
                 <button onClick={handleUpdateTotal}>Update Total</button>
                 <button onClick={()=>{navigate('/checkout')}}>Checkout</button>
             </div>
 
-            <div id="basket-products">
+            <div className={styles.basketProducts}>
                 {basket.products.map((product)=>{
                     return <BasketProduct product={product} key={product.id}/>
                 })}
