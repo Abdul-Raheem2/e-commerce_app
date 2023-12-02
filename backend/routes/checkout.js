@@ -55,7 +55,6 @@ checkoutRouter.post('/create-checkout-session',checkBasket,async (req,res,next)=
 checkoutRouter.get('/session-status', async (req, res,next) => {
     try{
         const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
-        console.log(session);
         res.send({
             status: session.status,
         });

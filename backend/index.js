@@ -25,7 +25,7 @@ app.use(cors({
 app.use(logger('dev'));
 
 const stripeRouter = require('./routes/stripe');
-app.use('/webhook',stripeRouter);
+app.use('/stripe_webhooks',stripeRouter);
 
 app.use(cookieParser());
 

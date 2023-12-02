@@ -18,7 +18,7 @@ basketRouter.get('/',async (req,res,next)=>{
 
 basketRouter.get('/:orderId',async (req,res,next)=>{
     try{
-            const orderDetails = await db.orderDetails(req.user.id,req.params.orderId);
+        const orderDetails = await db.orderDetails(req.user.id,req.params.orderId);
         if(orderDetails){res.json(orderDetails);}
         else{res.status(400).send('Invalid order Id');}
     }catch(err){

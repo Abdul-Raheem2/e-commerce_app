@@ -132,8 +132,8 @@ const newOrder = async (userId,numProducts,totalCost,status) => {
     VALUES ($1,NOW(),$2,$3,$4) RETURNING *`,[userId,numProducts,totalCost,status])).rows[0];
 }
 
-const copyProductsFromBasketToOrder = async (basketId,orderId) => {
-    const products = (await pool.query('SELECT * FROM baskets_products WHERE basket_id = $1',[basketId])).rows;
+const moveProductsFromBasketToOrder = async (basketId,orderId) => {
+    const products = (await pool.query('DELETE FROM baskets_products WHERE basket_id = $1 RETURNING *',[basketId])).rows;
     const values = products.map((product)=>{
         return([`${orderId}`,`${product.product_id}`,`${product.quantity}`]);
     });
@@ -142,14 +142,14 @@ const copyProductsFromBasketToOrder = async (basketId,orderId) => {
 
 //orders
 const allOrders = async (userId) => {
-    return (await pool.query('SELECT * FROM orders WHERE user_id = $1',[userId])).rows;
+    return (await pool.query('SELECT * FROM orders WHERE user_id = $1 ORDER BY order_date DESC',[userId])).rows;
 }
 
 const orderDetails = async (userId,orderId) => {
     const order = await pool.query('SELECT * FROM orders WHERE user_id = $1 AND id =$2 LIMIT 1',[userId,orderId]);
     if(order.rowCount){
         const orderProducts = await pool.query(`SELECT products.id AS product_id, orders_products.quantity AS quantity, 
-        products.name AS name, products.description AS description, products.price AS price, products.category AS category
+        products.name AS name, products.image AS image, products.price AS price
         FROM orders_products INNER JOIN products ON products.id = orders_products.product_id
         WHERE order_id = $1`,[orderId]);
         return({
@@ -186,7 +186,7 @@ module.exports ={
     updateProductQuantity,
     deleteBasket,
     newOrder,
-    copyProductsFromBasketToOrder,
+    moveProductsFromBasketToOrder,
     allOrders,
     orderDetails,
     updateOrderStatus

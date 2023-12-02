@@ -1,0 +1,20 @@
+.ordersDiv{
+    margin:10px auto;
+    width:70%;
+}
+
+.order{
+    border: thin solid black;
+}
+.orderInfo{
+    display: flex;
+    justify-content: space-around;
+}
+
+.icon{
+    margin-top: 15px;
+}
+
+.orderDetails{
+    text-align: center;
+}

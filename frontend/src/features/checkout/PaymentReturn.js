@@ -21,7 +21,7 @@ export default function PaymentReturn(){
         navigate('/checkout');
     }
     else if (status === 'complete') {
-        return <p>Thank You. Your payment was successfull and your order has been placed</p>
+        return <p>Thank You. Your order has been recieved and is now being processed.</p>
     }
     return null;
 }

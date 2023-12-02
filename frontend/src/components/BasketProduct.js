@@ -30,7 +30,7 @@ export default function BasketProduct({product}){
             <div className={styles.productImg} style={{"backgroundColor":product.image}} onClick={handleProductClick}></div>
             <div className={styles.productInfo} onClick={handleProductClick}>
                 <h3>{product.name}</h3>
-                <p>{moneyFormatter(product.price)}</p>
+                <p>{moneyFormatter(product.price)} x {product.quantity} = {moneyFormatter(product.price*product.quantity)}</p>
             </div>
             <div className={styles.productOptions}>
                 <div className={styles.productQtyDiv}>
