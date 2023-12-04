@@ -71,7 +71,7 @@ export default function Register(){
                     className={styles.googleLoginBtn}
                     onClick={(e) => {
                         e.preventDefault()
-                        window.location.href = `http://localhost:3000/login/google`
+                        window.location.href = `${process.env.REACT_APP_BASE_URL}/login/google`
                     }}
                 />
             </div>
