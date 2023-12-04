@@ -13,7 +13,7 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 
 //app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openApiDocumentation));
 
@@ -33,6 +33,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 if(process.env.NODE_ENV==='production'){
+  app.set('trust proxy', 1);
   app.use(session({
     secret: process.env.SESSION_SECRET,
     cookie: { 
