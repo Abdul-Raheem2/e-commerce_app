@@ -20,19 +20,21 @@ export default function Orders(){
         <div>
             <h2>Orders</h2>
             <div className={styles.ordersDiv}>
-                <table className={styles.ordersTable}>
-                    <tr>
-                        <th>Order Number</th>
-                        <th>Order Date</th>
-                        <th>Products</th>
-                        <th>Total</th>
-                        <th>Status</th>
-                        <th>Order Details</th>
-                    </tr>
-                    {orders.map((order)=>{
-                        return <Order order={order} key={order.id} selected={selectedOrder && order.id===selectedOrder.id}/>
-                    })}
-                </table>
+                <div className={styles.orders}>
+                    <table className={styles.ordersTable}>
+                        <tr>
+                            <th>Order Number</th>
+                            <th>Order Date</th>
+                            <th>Products</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Order Details</th>
+                        </tr>
+                        {orders.map((order)=>{
+                            return <Order order={order} key={order.id} selected={selectedOrder && order.id===selectedOrder.id}/>
+                        })}
+                    </table>
+                </div>
                 <div className={styles.orderDetails}>
                     {selectedOrder && selectedOrder.products.map((product)=>{
                         return (

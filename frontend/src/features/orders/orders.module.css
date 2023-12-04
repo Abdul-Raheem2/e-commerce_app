@@ -1,31 +1,31 @@
 .ordersDiv{
     margin:10px auto;
     width:90%;
-    display: grid;
-    grid-template-columns: 3fr 2fr;
-    gap:5px;
+}
+.orders{
+    display: inline-block;
+    width: 50%;
+    vertical-align: top;
+    margin: 0 10px;
+}
+
+.orderDetails{
+    display: inline-block;
 }
 
 .ordersTable{
-    width: 100%;
+    width:100%;
     border: thin solid black;
     border-collapse: collapse;
     text-align: center;
 }
-.ordersTable th,td{
+.ordersTable td,th{
+    line-height: 30px;
     border: thin solid black;
 }
 
 .highlightedOrder{
     background-color: yellow;
-}
-
-.order{
-    border: thin solid black;
-}
-.orderInfo{
-    display: flex;
-    justify-content: space-around;
 }
 
 .productImg{
