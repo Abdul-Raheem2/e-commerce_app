@@ -5,11 +5,9 @@ import { useDispatch} from "react-redux";
 import { fetchOrdersDetails,UnselectOrder } from './orderSlice';
 import moneyFormatter from "../../utils/money";
 import { FaAngleRight,FaAngleLeft } from "react-icons/fa";
-import { useState } from 'react';
 
 export default function Order({order,selected}){
     const dispatch = useDispatch();
-    const [orderDetails,setOrderDetails] = useState(false);
 
     const orderDate = new Date(order.order_date).toLocaleString('default', {
         day:'numeric',

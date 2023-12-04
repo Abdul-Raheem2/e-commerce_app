@@ -4,7 +4,7 @@
 }
 .orders{
     display: inline-block;
-    width: 50%;
+    width: 60%;
     vertical-align: top;
     margin: 0 10px;
 }
@@ -30,6 +30,7 @@
 
 .productImg{
     display: inline-block;
+    border: thin solid black;
     vertical-align: middle;
     width:30px;
     height:30px;

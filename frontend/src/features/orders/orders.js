@@ -12,7 +12,7 @@ export default function Orders(){
 
     useEffect(()=>{
         dispatch(fetchOrders());
-    },[])
+    },[dispatch])
 
     const orders = useSelector((state)=>state.orders.orders);
     const selectedOrder = useSelector((state)=>state.orders.selectedOrder);
@@ -22,17 +22,21 @@ export default function Orders(){
             <div className={styles.ordersDiv}>
                 <div className={styles.orders}>
                     <table className={styles.ordersTable}>
-                        <tr>
-                            <th>Order Number</th>
-                            <th>Order Date</th>
-                            <th>Products</th>
-                            <th>Total</th>
-                            <th>Status</th>
-                            <th>Order Details</th>
-                        </tr>
-                        {orders.map((order)=>{
-                            return <Order order={order} key={order.id} selected={selectedOrder && order.id===selectedOrder.id}/>
-                        })}
+                        <thead>
+                            <tr>
+                                <th>Order Number</th>
+                                <th>Order Date</th>
+                                <th>Products</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Order Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {orders.map((order)=>{
+                                return <Order order={order} key={order.id} selected={selectedOrder && order.id===selectedOrder.id}/>
+                            })}
+                        </tbody>
                     </table>
                 </div>
                 <div className={styles.orderDetails}>
