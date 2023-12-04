@@ -2,49 +2,41 @@ import styles from './orders.module.css';
 
 import { useDispatch} from "react-redux";
 
-import { fetchOrdersDetails } from './orderSlice';
-
+import { fetchOrdersDetails,UnselectOrder } from './orderSlice';
 import moneyFormatter from "../../utils/money";
-import { FaAngleDown,FaAngleUp } from "react-icons/fa";
+import { FaAngleRight,FaAngleLeft } from "react-icons/fa";
 import { useState } from 'react';
 
-export default function Order({order}){
+export default function Order({order,selected}){
     const dispatch = useDispatch();
+    const [orderDetails,setOrderDetails] = useState(false);
 
-    const [expanded,setExpanded] = useState(false);
+    const orderDate = new Date(order.order_date).toLocaleString('default', {
+        day:'numeric',
+        month: 'short',
+        year: 'numeric',
+        hour:'2-digit',
+        minute:'2-digit'
+    });
 
-    const orderDate = new Date(order.order_date).toString();
-
-    function handleExtendClick(e){
+    function handleSelectClick(e){
         dispatch(fetchOrdersDetails({orderId:order.id}));
-        setExpanded(true);
     }
-    function handleCollapseClick(e){
-        setExpanded(false);
+    function handleUnselectClick(e){
+        dispatch(UnselectOrder());
     }
-
     return (
-        <div className={styles.order}>
-            <div className={styles.orderInfo}>
-                <p>order number: {order.id}</p>
-                <p>order total: {moneyFormatter(order.total_cost)}</p>
-                <p>products: {order.num_products}</p>
-                <p>order date: {orderDate}</p>
-                <p>status: {order.status}</p>
-                {expanded ?<span onClick={handleCollapseClick}><FaAngleUp className={styles.icon}/></span>
-                :<span onClick={handleExtendClick}><FaAngleDown className={styles.icon}/></span>}
-            </div>
-            {expanded && <div className={styles.orderDetails}>
-                {order.products && order.products.map((product)=>{
-                    return (
-                    <div key={product.product_id}>
-                        <p>{product.name}</p>
-                        <p>qty: {product.quantity}</p>
-                        <p>{moneyFormatter(product.price)} x {product.quantity} = {moneyFormatter(product.price*product.quantity)}</p>
-                    </div>)
-                })}
-            </div>}
-        </div>
+        <tr className={selected? styles.highlightedOrder:null}>
+            <td>{order.id}</td>
+            <td>{orderDate}</td>
+            <td>{order.num_products}</td>
+            <td>{moneyFormatter(order.total_cost)}</td>
+            <td>{order.status}</td>
+            <td>
+                {selected? <button onClick={handleUnselectClick}><FaAngleLeft/></button>
+                :<button onClick={handleSelectClick}><FaAngleRight/></button>}
+            </td>
+        </tr>
 
     )
 }

@@ -1,6 +1,23 @@
 .ordersDiv{
     margin:10px auto;
-    width:70%;
+    width:90%;
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap:5px;
+}
+
+.ordersTable{
+    width: 100%;
+    border: thin solid black;
+    border-collapse: collapse;
+    text-align: center;
+}
+.ordersTable th,td{
+    border: thin solid black;
+}
+
+.highlightedOrder{
+    background-color: yellow;
 }
 
 .order{
@@ -11,10 +28,14 @@
     justify-content: space-around;
 }
 
-.icon{
-    margin-top: 15px;
+.productImg{
+    display: inline-block;
+    vertical-align: middle;
+    width:30px;
+    height:30px;
 }
 
-.orderDetails{
-    text-align: center;
+.productInfo{
+    display: inline-block;
+    margin: 5px 5px;
 }

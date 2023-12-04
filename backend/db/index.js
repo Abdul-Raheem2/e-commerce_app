@@ -148,8 +148,8 @@ const allOrders = async (userId) => {
 const orderDetails = async (userId,orderId) => {
     const order = await pool.query('SELECT * FROM orders WHERE user_id = $1 AND id =$2 LIMIT 1',[userId,orderId]);
     if(order.rowCount){
-        const orderProducts = await pool.query(`SELECT products.id AS product_id, orders_products.quantity AS quantity, 
-        products.name AS name, products.image AS image, products.price AS price
+        const orderProducts = await pool.query(`SELECT products.id AS product_id, orders_products.quantity AS quantity,
+        products.name AS name, products.price AS price,products.image AS image
         FROM orders_products INNER JOIN products ON products.id = orders_products.product_id
         WHERE order_id = $1`,[orderId]);
         return({
