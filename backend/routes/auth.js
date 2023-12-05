@@ -37,7 +37,7 @@ authRouter.post('/register',[
 
 authRouter.post("/login",(req,res,next)=>{
     if(req.session.basketId){
-        res.cookie('basketId',req.session.basketId)
+        res.cookie('basketId',req.session.basketId,{secure:true})
     }
     next();
 },passport.authenticate('local'),(req,res,next)=>{
@@ -50,7 +50,7 @@ authRouter.post("/login",(req,res,next)=>{
 
 authRouter.get('/login/google',(req,res,next)=>{
     if(req.session.basketId){
-        res.cookie('basketId',req.session.basketId)
+        res.cookie('basketId',req.session.basketId,{secure:true})
     }
     next();
 },passport.authenticate('google'));
