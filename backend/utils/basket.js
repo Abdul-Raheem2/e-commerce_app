@@ -2,6 +2,7 @@ const db = require('../db');
 
 async function checkBasket(req,res,next){
     if(!req.session.basketId){
+        console.log(req.cookies.basketId);
         if(req.isAuthenticated()){
             const userBasket = await db.checkUserBasket(req.user.id);
             if(userBasket){
