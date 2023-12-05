@@ -1,8 +1,8 @@
 const express = require('express');
 const db = require('../db');
 
-const stripe = require('stripe')(process.env.STRIPESECRET);
-const endpointSecret = process.env.STRIPEENDPOINTSECRET;
+const stripe = require('stripe')(process.env.STRIPE_SECRET);
+const endpointSecret = process.env.STRIPE_ENDPOINT_SECRET;
 
 const stripeRouter = express.Router({mergeParams:true});
 

@@ -51,7 +51,7 @@ export default function LogIn(){
                     className={styles.googleLoginBtn}
                     onClick={(e) => {
                         e.preventDefault()
-                        window.location.href = `${process.env.REACT_APP_BASE_URL}/login/google`
+                        window.location.href = `${process.env.REACT_APP_API_BASE_URL}/login/google`
                     }}
                 />
             </div>

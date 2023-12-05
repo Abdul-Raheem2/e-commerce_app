@@ -5,7 +5,7 @@ const checkAuthenticated = require('../utils/authenticated');
 const {checkBasket} = require('../utils/basket');
 
 
-const stripe = require('stripe')(process.env.STRIPESECRET);
+const stripe = require('stripe')(process.env.STRIPE_SECRET);
 
 const checkoutRouter = express.Router({mergeParams:true});
 
