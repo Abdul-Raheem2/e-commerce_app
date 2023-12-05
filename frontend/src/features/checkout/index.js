@@ -7,7 +7,7 @@ import { apiCreateCheckoutSession } from '../../api/checkout';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const stripePromise = loadStripe('pk_test_51O3htwA0mQPZIaArFvbsgi3eaZyFMRcNOyP3rbDFvMpBTkOyK9aAu2HdP3dEmJSvBL12fNCZOqPAJ1GFtS95MajN001QQsylCy');
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE);
 
 export default function Checkout(){
     const navigate = useNavigate();
