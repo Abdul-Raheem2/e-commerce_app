@@ -10,7 +10,6 @@ const passport = require('passport');
 const helmet = require('helmet');
 const cors = require('cors');
 const logger = require('morgan');
-const cookieParser = require('cookie-parser');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -26,8 +25,6 @@ app.use(logger('dev'));
 
 const stripeRouter = require('./routes/stripe');
 app.use('/stripe_webhooks',stripeRouter);
-
-app.use(cookieParser());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

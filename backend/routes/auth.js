@@ -12,13 +12,11 @@ authRouter.post('/register',[
 ],async (req,res,next)=>{
     try{
         if(!validationResult(req).isEmpty()){
-            console.log(validationResult(req));
             return res.status(400).send('Enter a valid email and password');
         }
         const {email,password,firstName,lastName} = req.body;
         const user = await db.userExists(email);
         if(user){
-            console.log(user);
             if(user.auth_method==='google'){
                 return res.status(409).json({google:true});
             }else{
@@ -37,30 +35,69 @@ authRouter.post('/register',[
 
 authRouter.post("/login",(req,res,next)=>{
     if(req.session.basketId){
-        res.cookie('basketId',req.session.basketId,{secure:true});
-        console.log(req.session.basketId);
+        res.locals.basketId = req.session.basketId;
     }
     next();
-},passport.authenticate('local'),(req,res,next)=>{
-    if(req.isAuthenticated()){
-        res.status(200).send();
-    }else{
-        res.status(400).send();
+},passport.authenticate('local'),async (req,res,next)=>{
+    try{
+        if(req.isAuthenticated()){
+            const userBasket = await db.checkUserBasket(req.user.id);
+            if(userBasket){
+                if(res.locals.basketId){
+                    await db.combineBaskets(userBasket.id,res.locals.basketId);
+                }
+                req.session.basketId = userBasket.id;
+            }else{
+                if(res.locals.basketId){
+                    db.setUserBasket(req.user.id,res.locals.basketId);
+                    req.session.basketId = res.locals.basketId;
+                }else{
+                    const newBasket = await db.newBasket(req.user.id);
+                    req.session.basketId = newBasket.id;
+                }
+            }
+            res.status(200).send();
+        }else{
+            res.status(400).send();
+        }
+    }catch(err){
+        next(err);
     }
 });
 
-authRouter.get('/login/google',(req,res,next)=>{
+authRouter.get('/login/google',passport.authenticate('google'));
+
+authRouter.get('/oauth2/redirect/google',(req,res,next)=>{
     if(req.session.basketId){
-        res.cookie('basketId',req.session.basketId,{secure:true})
-        console.log(req.session.basketId);
+        res.locals.basketId = req.session.basketId;
     }
     next();
-},passport.authenticate('google'));
-
-authRouter.get('/oauth2/redirect/google', passport.authenticate('google',{
-    successRedirect: `${process.env.FRONT_END_BASE_URL}/`,
+}, passport.authenticate('google',{
     failureRedirect: `${process.env.FRONT_END_BASE_URL}/login`
-}));
+}),async (req,res,next)=>{
+    try{
+        if(req.isAuthenticated()){
+            const userBasket = await db.checkUserBasket(req.user.id);
+            if(userBasket){
+                if(res.locals.basketId){
+                    await db.combineBaskets(userBasket.id,res.locals.basketId);
+                }
+                req.session.basketId = userBasket.id;
+            }else{
+                if(res.locals.basketId){
+                    db.setUserBasket(req.user.id,res.locals.basketId);
+                    req.session.basketId = res.locals.basketId;
+                }else{
+                    const newBasket = await db.newBasket(req.user.id);
+                    req.session.basketId = newBasket.id;
+                }
+            }
+            res.redirect(`${process.env.FRONT_END_BASE_URL}`);
+        }else{
+            res.redirect(`${process.env.FRONT_END_BASE_URL}/login`);
+        }
+    }catch(err){next(err)}
+});
 
 authRouter.post("/logout", (req, res,next) => {
     req.logout((err)=>{
