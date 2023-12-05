@@ -13,6 +13,22 @@ async function checkBasket(req,res,next){
     next();
 }
 
+async function setUserBasket(oldBasketId,userId){
+    const userBasket = await db.checkUserBasket(userId);
+    if(userBasket){
+        if(oldBasketId){
+            await db.combineBaskets(userBasket.id,oldBasketId);
+        }
+        return userBasket.id;
+    }
+    if(oldBasketId){
+        await db.setUserBasket(userId,oldBasketId);
+        return oldBasketId;
+    }
+    const newBasket = await db.newBasket(userId);
+    return newBasket.id;
+}
+
 function basketInfo(basket){
     let total = 0;
     let numProducts=0;
@@ -28,5 +44,6 @@ function basketInfo(basket){
 
 module.exports = {
     basketInfo,
-    checkBasket
+    checkBasket,
+    setUserBasket
 };

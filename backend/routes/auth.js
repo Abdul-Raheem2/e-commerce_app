@@ -4,6 +4,8 @@ const db = require('../db');
 const bcrypt = require('bcrypt');
 const {check,validationResult} = require('express-validator');
 
+const {setUserBasket} = require('../utils/basket');
+
 const authRouter = express.Router({mergeParams:true});
 
 authRouter.post('/register',[
@@ -41,21 +43,7 @@ authRouter.post("/login",(req,res,next)=>{
 },passport.authenticate('local'),async (req,res,next)=>{
     try{
         if(req.isAuthenticated()){
-            const userBasket = await db.checkUserBasket(req.user.id);
-            if(userBasket){
-                if(res.locals.basketId){
-                    await db.combineBaskets(userBasket.id,res.locals.basketId);
-                }
-                req.session.basketId = userBasket.id;
-            }else{
-                if(res.locals.basketId){
-                    db.setUserBasket(req.user.id,res.locals.basketId);
-                    req.session.basketId = res.locals.basketId;
-                }else{
-                    const newBasket = await db.newBasket(req.user.id);
-                    req.session.basketId = newBasket.id;
-                }
-            }
+            req.session.basketId = await setUserBasket(res.locals.basketId,req.user.id);
             res.status(200).send();
         }else{
             res.status(400).send();
@@ -77,21 +65,7 @@ authRouter.get('/oauth2/redirect/google',(req,res,next)=>{
 }),async (req,res,next)=>{
     try{
         if(req.isAuthenticated()){
-            const userBasket = await db.checkUserBasket(req.user.id);
-            if(userBasket){
-                if(res.locals.basketId){
-                    await db.combineBaskets(userBasket.id,res.locals.basketId);
-                }
-                req.session.basketId = userBasket.id;
-            }else{
-                if(res.locals.basketId){
-                    db.setUserBasket(req.user.id,res.locals.basketId);
-                    req.session.basketId = res.locals.basketId;
-                }else{
-                    const newBasket = await db.newBasket(req.user.id);
-                    req.session.basketId = newBasket.id;
-                }
-            }
+            req.session.basketId = await setUserBasket(res.locals.basketId,req.user.id);
             res.redirect(`${process.env.FRONT_END_BASE_URL}`);
         }else{
             res.redirect(`${process.env.FRONT_END_BASE_URL}/login`);
