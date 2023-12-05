@@ -2,7 +2,7 @@ const Pool = require('pg').Pool;
 const format = require('pg-format');
 
 const pool = new Pool({
-    connectionString: process.env.PGCONNECTIONSTRING
+    connectionString: process.env.PG_CONNECTION_STRING
 });
  
 //users
